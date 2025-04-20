@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer')
 const path = require('path')
 const { viewuserprofile } = require('../../controller/web/WebAuth');
-const { addhomebannercontroller, deletehomebanner, updatehomebanner, viewhomebanner } = require('../../controller/admin/HomeController');
+const { addhomebannercontroller, deletehomebanner, updatehomebanner, viewhomebanner, addhomecounter, viewhomecounters, deletecounters, Homewhychoosecontroller, viewhomewhychoose, deletehomewhychoose, updatehomewhychoose, Homefeaturedprofilecontroller, viewhomefeaturedprofile, deletehomefeaturedprofile, updatehomefeaturedprofile, Homesuccessstoriescontroller, viewhomesuccessstories, deletehomesuccessstories, updatesuccessstories } = require('../../controller/admin/HomeController');
 
 
 let userAuth = (req, res, next) => {
@@ -136,11 +136,14 @@ Adminroutes.post('/website-theme', userAuth, verifytoken, addwebsitetheme)
 
 
 //home page controller 
+Adminroutes.post('/home-banner', userAuth, verifytoken, upload, addhomebannercontroller)
+Adminroutes.get('/view-home-banner', viewhomebanner)
+Adminroutes.put('/update-home-banner', userAuth, verifytoken, upload, updatehomebanner)
 
-Adminroutes.post("/home-banner", userAuth, verifytoken, upload, addhomebannercontroller)
-Adminroutes.get("/view-home-banner", viewhomebanner)
-Adminroutes.delete("/delete-home-banner", userAuth, verifytoken, verifytoken, deletehomebanner)
-Adminroutes.put("/update-home-banner", userAuth, verifytoken, upload, updatehomebanner)
+//home page counter controller 
+Adminroutes.post('/add-homecounter', userAuth, verifytoken, addhomecounter)
+Adminroutes.get('/view-homecounter', viewhomecounters)
+
 
 
 Adminroutes.post('/view-user-profile', userAuth, verifytoken, viewuserprofile)

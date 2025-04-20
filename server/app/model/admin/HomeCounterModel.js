@@ -3,7 +3,7 @@ let mongoose = require('mongoose');
 
 let homecounterschema = mongoose.Schema({
     Counter_Value: {
-        type: String,
+        type: Number,
         required: true
     },
     Counter_Title: {
