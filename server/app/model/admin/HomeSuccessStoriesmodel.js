@@ -10,7 +10,6 @@ let homesuccessstoriesschema = mongoose.Schema({
         required: true
     },
 
-
     Success_Stories_Card_Section_Name_Text_Bold: {
         type: Number,
         required: true

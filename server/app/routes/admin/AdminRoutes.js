@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer')
 const path = require('path')
 const { viewuserprofile } = require('../../controller/web/WebAuth');
-const { addhomebannercontroller, deletehomebanner, updatehomebanner, viewhomebanner, addhomecounter, viewhomecounters, deletecounters, Homewhychoosecontroller, viewhomewhychoose, deletehomewhychoose, updatehomewhychoose, Homefeaturedprofilecontroller, viewhomefeaturedprofile, deletehomefeaturedprofile, updatehomefeaturedprofile, Homesuccessstoriescontroller, viewhomesuccessstories, deletehomesuccessstories, updatesuccessstories } = require('../../controller/admin/HomeController');
+const { addhomebannercontroller, updatehomebanner, viewhomebanner, addhomecounter, viewhomecounters, deletecounters, Homewhychoosecontroller, viewhomewhychoose, deletehomewhychoose, updatehomewhychoose, Homefeaturedprofilecontroller, viewhomefeaturedprofile, deletehomefeaturedprofile, updatehomefeaturedprofile, Homesuccessstoriescontroller, viewhomesuccessstories, deletehomesuccessstories, updatesuccessstories } = require('../../controller/admin/HomeController');
 
 
 let userAuth = (req, res, next) => {
@@ -143,7 +143,30 @@ Adminroutes.put('/update-home-banner', userAuth, verifytoken, upload, updatehome
 //home page counter controller 
 Adminroutes.post('/add-homecounter', userAuth, verifytoken, addhomecounter)
 Adminroutes.get('/view-homecounter', viewhomecounters)
+Adminroutes.delete('/delete-homecounter', userAuth, verifytoken, deletecounters)
 
+
+//home page why choose controller 
+Adminroutes.post('/add-home-why-choose', userAuth, verifytoken, upload, Homewhychoosecontroller)
+Adminroutes.get('/view-home-why-choose', viewhomewhychoose)
+Adminroutes.delete('/delete-home-why-choose', userAuth, verifytoken, deletehomewhychoose)
+Adminroutes.put('/update-home-why-choose', userAuth, verifytoken, upload, updatehomewhychoose)
+
+
+//home page featured controller 
+Adminroutes.post('/add-home-featured', userAuth, verifytoken, upload, Homefeaturedprofilecontroller)
+Adminroutes.get('/view-home-featured', viewhomefeaturedprofile)
+Adminroutes.delete('/delete-home-featured', userAuth, verifytoken, deletehomefeaturedprofile)
+Adminroutes.put('/update-featured-profile', userAuth, verifytoken, upload, updatehomefeaturedprofile)
+
+
+
+
+//home page success controller 
+Adminroutes.post('/add-home-success', userAuth, verifytoken, upload, Homesuccessstoriescontroller)
+Adminroutes.get('/view-home-success', viewhomesuccessstories)
+Adminroutes.delete('/delete-home-success', userAuth, verifytoken, deletehomesuccessstories)
+Adminroutes.put('/update-home-success', userAuth, verifytoken, upload, updatesuccessstories)
 
 
 Adminroutes.post('/view-user-profile', userAuth, verifytoken, viewuserprofile)

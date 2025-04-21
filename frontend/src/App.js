@@ -40,6 +40,9 @@ import { Home } from './pages/website/main/Home';
 import { DashHome } from './pages/dashboard/main/DashHome';
 import { HomeLayout } from './pages/dashboard/main/Home Components/HomeLayout';
 import { DashUpdateHomeBanner } from './pages/dashboard/main/Home Components/DashUpdateHomeBanner';
+import { DashUpdateHomeWhyChoose } from './pages/dashboard/main/Home Components/DashUpdateHomeWhyChoose';
+import { DashUpdateHomeFeaturedProfile } from './pages/dashboard/main/Home Components/DashUpdateHomeFeaturedProfile';
+import { DashUpdateSuccessStories } from './pages/dashboard/main/Home Components/DashUpdateSuccessStories';
 
 function App() {
   return (
@@ -74,7 +77,11 @@ function App() {
           <Route path='/dash-home' element={<DashHome />} />
           <Route path='/dash-users' element={<DashUsers />} />
           <Route path='/home-layout' element={<HomeLayout />} />
-          <Route path='/update-home-layout' element={<DashUpdateHomeBanner />} />
+          <Route path='/dash-updatehomebanner' element={<DashUpdateHomeBanner />} />
+          <Route path='/dash-updatehomewhychoose' element={<DashUpdateHomeWhyChoose />} />
+          <Route path='/dash-updatefeaturedprofiles' element={<DashUpdateHomeFeaturedProfile />} />
+          <Route path='/dash-updatesucccessstories' element={<DashUpdateSuccessStories/>} />
+
           <Route path='/view-users-profile/:_id' element={<DashUserProfile />} />
           <Route path='/dash-religions' element={<DashReligion />} />
           <Route path='/dash-update-religions/:_id/:ReligionName/:Status' element={<DashUpdateReligion />} />

@@ -5,6 +5,9 @@ import { DashboardSidebar } from '../../../common/DashboardSidebar'
 import { Toaster } from 'react-hot-toast'
 import { DashAddHomeBanner } from './Home Components/DashAddHomeBanner'
 import DashAddHomeCounter from './Home Components/DashAddHomeCounter'
+import { DashAddHomeWhyChoose } from './Home Components/DashAddHomeWhyChoose'
+import { DashFeaturedProfile } from './Home Components/DashFeaturedProfile'
+import { DashHomeSuccessStories } from './Home Components/DashHomeSuccessStories'
 
 export function DashHome() {
     return (
@@ -21,9 +24,9 @@ export function DashHome() {
 
                         <DashAddHomeBanner />
                         <DashAddHomeCounter />
-                        {/*   <DashAddHomeWhyChoose />
+                        <DashAddHomeWhyChoose />
                         <DashFeaturedProfile />
-                        <DashHomeSuccessStories /> */}
+                        <DashHomeSuccessStories />
 
                     </section>
                 </section >

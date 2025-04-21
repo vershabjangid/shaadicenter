@@ -3,50 +3,70 @@ import banner from '../../../../images/loginbanner1.png'
 import Slider from "react-slick";
 import { BsChatHeartFill, BsQuestionCircle } from 'react-icons/bs'
 import { FaEdit, FaUserPlus } from 'react-icons/fa'
-import { api } from '../../../../url/Url';
+import { api, getCookie } from '../../../../url/Url';
 import { Header } from '../../../../common/Header';
 import { Loader } from '../../../../common/Loader';
 import { Footer } from '../../../../common/Footer';
 import { useNavigate } from 'react-router-dom';
+import { RiDeleteBin5Fill } from 'react-icons/ri';
+import toast from 'react-hot-toast';
 
 export function HomeLayout() {
     let [loader, setloader] = useState(false)
+    let notificationsuccess = (success) => toast.success(success)
+    let notificationerror = (error) => toast.error(error)
 
-    let fetch = async () => {
-        setloader(true)
-        try {
-            let [homebanner] = await Promise.all([
-                api.get('/view-home-banner')
-            ])
-            return {
-                homebanners: homebanner.data.viewdata,
-                imgurl: homebanner.data.url
-            }
-        }
-        catch (error) {
-            console.log(error)
-        }
-    }
+   
+      let fetch = async () => {
+             try {
+                 let [homebanner, homecounter, homewhychoose, homefeatured, homesuccess] = await Promise.all([
+                     api.get('/view-home-banner'),
+                     api.get('/view-homecounter'),
+                     api.get('/view-home-why-choose'),
+                     api.get('/view-home-featured'),
+                     api.get('/view-home-success')
+                 ])
+                 return {
+                     homebanners: homebanner.data.viewdata,
+                     homecounters: homecounter.data,
+                     homewhychooses: homewhychoose.data,
+                     homefeatures: homefeatured.data,
+                     homesuccessstories: homesuccess.data,
+                     imgurl: homebanner.data.url
+                 }
+             }
+             catch (error) {
+                 console.log(error)
+             }
+         }
+     
+         let [homebannerdata, sethomebannerdata] = useState([])
+         let [homebannercounter, sethomebannercounter] = useState([])
+         let [homewhychoosedata, sethomewhychoosedata] = useState([])
+         let [homefeatureddata, sethomefeatureddata] = useState([])
+         let [homesuccessdata, sethomesuccessdata] = useState([])
+         let [imgurl, setimgurl] = useState([])
+         let finalfetch = () => {
+             fetch()
+                 .then((res) => {
+                     sethomebannerdata(res.homebanners)
+                     sethomebannercounter(res.homecounters)
+                     sethomewhychoosedata(res.homewhychooses)
+                     sethomefeatureddata(res.homefeatures)
+                     sethomesuccessdata(res.homesuccessstories)
+                     setimgurl(res.imgurl)
+                 })
+                 .catch((error) => {
+                     console.log(error)
+                 })
+         }
+     
+     
+         useEffect(() => {
+             finalfetch();
+         }, [])
 
-    let [homebannerdata, sethomebannerdata] = useState([])
-    let [imgurl, setimgurl] = useState([])
-    let finalfetch = () => {
-        fetch()
-            .then((res) => {
-                sethomebannerdata(res.homebanners)
-                setimgurl(res.imgurl)
-                setloader(false)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-
-    useEffect(() => {
-        finalfetch();
-    }, [])
-
+       
     console.log(imgurl)
 
     var settings = {
@@ -93,16 +113,199 @@ export function HomeLayout() {
 
 
     let navigate = useNavigate();
-
-    let updatebanner = (value) =>{
-        navigate('/update-home-layout',{state : value});
+    let updatedata = (value) => {
+        if (value.Banner_Image) {
+            navigate('/dash-updatehomebanner', { state: value })
+        }
+        else if (value.Why_Choose_Card_Icon) {
+            navigate('/dash-updatehomewhychoose', { state: value })
+        }
+        else if (value.Featured_Profile_Card_Section_Name_Heading) {
+            navigate('/dash-updatefeaturedprofiles', { state: value })
+        }
+        else if (value.Success_Stories_Card_Image) {
+            navigate('/dash-updatesucccessstories', { state: value })
+        }
     }
+
+
+    let [modal, setmodal] = useState(false);
+        let [modaldata, setmodaldata] = useState("");
+    
+        let deletedata = (value) => {
+            if (value.Banner_Image) {
+                try {
+                    api.delete('/delete-home-banner', {
+                        data: value,
+                        headers: {
+                            Authorization: getCookie('AdminToken')
+                        }
+                    })
+                        .then((res) => {
+                            if (res.data.Status === 1) {
+                                notificationsuccess(res.data.Message)
+                                finalfetch()
+                                setloader(false)
+                                setmodal(false)
+                            }
+                            else {
+                                notificationerror(res.data.Message)
+                                setloader(false)
+                                setmodal(false)
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            }
+            else if (value.Counter_Title) {
+                try {
+                    api.delete('/delete-homecounter', {
+                        data: value,
+                        headers: {
+                            Authorization: getCookie('AdminToken')
+                        }
+                    })
+                        .then((res) => {
+                            if (res.data.Status === 1) {
+                                notificationsuccess(res.data.Message)
+                                finalfetch()
+                                setloader(false)
+                                setmodal(false)
+                            }
+                            else {
+                                notificationerror(res.data.Message)
+                                setloader(false)
+                                setmodal(false)
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            }
+            else if (value.Why_Choose_Card_Icon) {
+                try {
+                    api.delete('/delete-home-why-choose', {
+                        data: value,
+                        headers: {
+                            Authorization: getCookie('AdminToken')
+                        }
+                    })
+                        .then((res) => {
+                            if (res.data.Status === 1) {
+                                notificationsuccess(res.data.Message)
+                                finalfetch()
+                                setloader(false)
+                                setmodal(false)
+                            }
+                            else {
+                                notificationerror(res.data.Message)
+                                setloader(false)
+                                setmodal(false)
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            }
+            else if (value.Featured_Profile_Card_Section_Name_Heading) {
+                try {
+                    api.delete('/delete-home-featured', {
+                        data: value,
+                        headers: {
+                            Authorization: getCookie('AdminToken')
+                        }
+                    })
+                        .then((res) => {
+                            if (res.data.Status === 1) {
+                                notificationsuccess(res.data.Message)
+                                finalfetch()
+                                setloader(false)
+                                setmodal(false)
+                            }
+                            else {
+                                notificationerror(res.data.Message)
+                                setloader(false)
+                                setmodal(false)
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            }
+            else if (value.Success_Stories_Card_Image) {
+                try {
+                    api.delete('/delete-home-success', {
+                        data: value,
+                        headers: {
+                            Authorization: getCookie('AdminToken')
+                        }
+                    })
+                        .then((res) => {
+                            if (res.data.Status === 1) {
+                                notificationsuccess(res.data.Message)
+                                finalfetch()
+                                setloader(false)
+                                setmodal(false)
+                            }
+                            else {
+                                notificationerror(res.data.Message)
+                                setloader(false)
+                                setmodal(false)
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            }
+    
+        }
     return (
         <>
+
+{
+                modal ? <section className='w-[100%] h-[100vh] fixed z-[60] bg-[#ffffff98] top-0 left-0 flex justify-center items-center'>
+                    <div className='w-[450px] border-[1px] border-[black] p-2 py-5 bg-[white] text-center rounded-[10px]'>
+                        <p className='text-[22px]'>Are Your Sure?</p>
+                        <div className='flex justify-evenly mt-[20px]'>
+                            <button className='bg-[green] text-[white] px-5 py-3 rounded-[10px]' onClick={() => setmodal(false)}>
+                                Decline
+                            </button>
+
+                            <button className='bg-[red] text-[white] px-5 py-3 rounded-[10px]' onClick={() => deletedata(modaldata)}>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </section> : null
+            }
+
+
          {
                 loader ? <Loader />
                     : <section className='main'>
                         <Header />
+
 
                         <section className='w-[100%] h-[85px] bg-[red]'></section>
                         {
@@ -111,7 +314,7 @@ export function HomeLayout() {
                                 homebannerdata.map((items, index) => {
                                     return (
                                         <section key={index} className='home_banner w-[100%] px-2 flex justify-between bg-[#460b5e] relative' style={(items.Banner_direction === 'right') ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }}>
-                                            <section className='text-[red] absolute right-[20px] top-[20px] text-[25px] cursor-pointer' onClick={()=>updatebanner(items)}><FaEdit/></section>
+                                            <section className='text-[red] absolute right-[20px] top-[20px] text-[25px] cursor-pointer' onClick={()=>updatedata(items)}><FaEdit/></section>
                                             <section className='home_banner_content  w-[50%] flex justify-center flex-col'>
                                                 <h1 style={{ fontWeight: items.Heading_Font_Bold, fontSize: items.Heading_Font_Size + 'px', lineHeight: items.Heading_Line_Height + 'px', textAlign: items.Heading_Text_Align, color: items.Heading_Text_Color, textDecoration: items.Heading_Text_Decoration }}>{items.Heading} </h1>
                                                 <p className='text-[white] text-[18px] mt-3' style={{ fontWeight: items.Sub_Heading_Font_Bold, fontSize: items.Sub_Heading_Font_Size + 'px', lineHeight: items.Sub_Heading_Line_Height + 'px', textAlign: items.Sub_Heading_Text_Align, color: items.Sub_Heading_Text_Color, textDecoration: items.Sub_Heading_Text_Decoration }}>{items.Sub_Heading}</p>
@@ -135,69 +338,30 @@ export function HomeLayout() {
 
                             <section className='w-[100%] border-[1px] flex justify-center flex-col z-[0]'>
                                 <div className='text-white mt-3'>
-                                    <Slider {...settings} className='z-0'>
-                                        <div className='px-3'>
-                                            <div className='bg-[#ffffff] rounded-[20px] py-3 mb-3'>
-                                                <div className='w-[100%]'>
-                                                    <div className='mt-[10px] text-black px-2  text-center'>
-                                                        <p className='font-[800] text-[35px] text-[#460b5e]'>100<sup>+</sup></p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className='px-3'>
-                                            <div className='bg-[#ffffff] rounded-[20px] py-3 mb-3'>
-                                                <div className='w-[100%]'>
-                                                    <div className='mt-[10px] text-black px-2  text-center'>
-                                                        <p className='font-[800] text-[35px] text-[#460b5e]'>100<sup>+</sup></p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div className='px-3'>
-                                            <div className='bg-[#ffffff] rounded-[20px] py-3 mb-3'>
-                                                <div className='w-[100%]'>
-                                                    <div className='mt-[10px] text-black px-2  text-center'>
-                                                        <p className='font-[800] text-[35px] text-[#460b5e]'>100<sup>+</sup></p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div className='px-3'>
-                                            <div className='bg-[#ffffff] rounded-[20px] py-3 mb-3'>
-                                                <div className='w-[100%]'>
-                                                    <div className='mt-[10px] text-black px-2  text-center'>
-                                                        <p className='font-[800] text-[35px] text-[#460b5e]'>100<sup>+</sup></p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div className='px-3'>
-                                            <div className='bg-[#ffffff] rounded-[20px] py-3 mb-3'>
-                                                <div className='w-[100%]'>
-                                                    <div className='mt-[10px] text-black px-2  text-center'>
-                                                        <p className='font-[800] text-[35px] text-[#460b5e]'>100<sup>+</sup></p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    </Slider>
+                                    {
+                                        homebannercounter.length === 0 ?
+                                            <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                            :
+                                            <Slider {...settings} className='z-0'>
+                                                {
+                                                    homebannercounter.map((items, index) => {
+                                                        return (
+                                                            <div className='px-3 relative' key={index}>
+                                                                  <RiDeleteBin5Fill className='absolute right-[25px] top-[15px] text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
+                                                                <div className='bg-[#ffffff] rounded-[20px] py-3 mb-3'>
+                                                                    <div className='w-[100%]'>
+                                                                        <div className='mt-[10px] text-black px-2  text-center'>
+                                                                            <p className='font-[800] text-[35px] text-[#460b5e]'>{items.Counter_Value}<sup>+</sup></p>
+                                                                            <p className='text-[grey] '>{items.Counter_Title}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                            </Slider>
+                                    }
                                 </div>
                             </section>
                         </section>
@@ -206,28 +370,37 @@ export function HomeLayout() {
 
 
 
-                        <section className='main_banner_2 p-[30px] text-center bg-[#eab6ff]'>
-                            <h2 className='text-[30px] font-[700] mb-[20px]'>Why Choose Us</h2>
-                            <section className='flex justify-evenly  flex-wrap text-start bg-[#460b5e]' style={{ width: "100%" }}>
-                                {/* {homewhychoosedata.map((items, index) => {
-                                    return ( */}
-                                <section className='w-[330px] p-[10px]  m-[10px] relative' style={{ backgroundColor: "#FFFF", borderRadius: "7px", boxShadow: "5px 5px 5px 0px #00000057" }}>
+                        <section className='main_banner_2 py-[15px] text-center bg-[#eab6ff]'>
+                            {
+                                 homewhychoosedata.length === 0 ?
+                                 <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                  :
+                                  <>
+                                   <h2 className='text-[30px] font-[700] mb-[20px]'>Why Choose Us</h2>
+                            <section className='flex justify-evenly  flex-wrap text-start ' style={{ width: "100%" }}>
+                            {homewhychoosedata.map((items, index) => {
+                                    return (
+                                <section key={index} className='w-[330px] p-[10px]  m-[10px] relative' style={{ backgroundColor: "#FFFF", borderRadius: "7px", boxShadow: "5px 5px 5px 0px #00000057" }}>
+                                   <div className='absolute right-[15px] top-[15px] flex'>
+                                   <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={()=>updatedata(items)}><FaEdit/></section>
+                                   <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
+                                   </div>
                                     <div className='w-[100%] overflow-hidden rounded-t-[10px]'>
                                         <div className='w-[50px] h-[50px] rounded-[100px] flex justify-center items-center text-[20px] overflow-hidden bg-[#be4fea] text-[#460b5e]'>
-                                            {/* <img src={`${imgurl}` + `${items.Why_Choose_Card_Icon}`} className='w-[100%] flex justify-center items-center' /> */}
+                                            <img src={`${imgurl}` + `${items.Why_Choose_Card_Icon}`} className='w-[100%] flex justify-center items-center' />
                                         </div>
                                     </div>
                                     <div className='w-[100%] rounded-t-[10px]'>
-                                        <p className='mt-[10px] font-[600]'>hello</p>
-                                        <p className='mt-[5px]'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eos obcaecati id officiis itaque magni dolorem tempora, repellat beatae nemo, at, ab incidunt possimus!</p>
-                                        {/* <p className='mt-[5px]' style={{ fontSize: items.Why_Choose_Card_Section_Head_Font_Size + 'px', textAlign: items.Why_Choose_Card_Section_Head_Text_Align, fontWeight: items.Why_Choose_Card_Section_Head_Text_Bold, textDecoration: items.Why_Choose_Card_Section_Head_Text_Decoration, lineHeight: items.Why_Choose_Card_Section_Head_Text_Line + 'px', color: items.Why_Choose_Card_Section_Home_Heading_Color }}>{items.Why_Choose_Card_Section_Home_Heading}</p> */}
-                                        {/* <p className='' style={{ fontSize: items.Why_Choose_Sub_Head_Font_Size + 'px', textAlign: items.Why_Choose_Sub_Head_Text_Align, fontWeight: items.Why_Choose_Sub_Head_Text_Bold, textDecoration: items.Why_Choose_Sub_Head_Text_Decoration, lineHeight: items.Why_Choose_Sub_Head_Text_Line + 'px', color: items.Why_Choose_Sub_Home_Heading_Color }}>{items.Why_Choose_Card_Section_Sub_Home_Heading}</p> */}
-                                    </div>
-                                </section>
-                                {/* )
-                                }) */}
-                                {/* } */}
+                                        <p className='mt-[5px]' style={{ fontSize: items.Why_Choose_Card_Section_Head_Font_Size + 'px', textAlign: items.Why_Choose_Card_Section_Head_Text_Align, fontWeight: items.Why_Choose_Card_Section_Head_Text_Bold, textDecoration: items.Why_Choose_Card_Section_Head_Text_Decoration, lineHeight: items.Why_Choose_Card_Section_Head_Text_Line + 'px', color: items.Why_Choose_Card_Section_Home_Heading_Color }}>{items.Why_Choose_Card_Section_Home_Heading}</p>
+                                        <p className='' style={{ fontSize: items.Why_Choose_Sub_Head_Font_Size + 'px', textAlign: items.Why_Choose_Sub_Head_Text_Align, fontWeight: items.Why_Choose_Sub_Head_Text_Bold, textDecoration: items.Why_Choose_Sub_Head_Text_Decoration, lineHeight: items.Why_Choose_Sub_Head_Text_Line + 'px', color: items.Why_Choose_Sub_Home_Heading_Color }}>{items.Why_Choose_Card_Section_Sub_Home_Heading}</p>
+                                              </div>
+                                       </section>
+                                          )
+                                    })
+                                 } 
                             </section>
+                         </>
+                            }
                         </section>
 
 
@@ -235,77 +408,48 @@ export function HomeLayout() {
 
 
                         <section className='w-[100%] px-2 py-3 bg-[#f3d6ff] z-0'>
-                            <section>
-                                <p className='text-[35px] font-[700] text-center'>Featured Profile</p>
-                            </section>
-                            <section className='w-[100%] border-[1px] flex justify-center flex-col z-[0]'>
-                                <div className='text-white mt-3'>
-                                    <Slider {...settings} className='z-0'>
-                                        <div className='px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 overflow-hidden'>
-                                                    <div className='rounded-t-[20px] overflow-hidden'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className='mt-[10px] text-black px-2'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
+                            {
+                                homefeatureddata.length === 0 ?
+                                    <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                    :
+                                    <>
+                                        <section>
+                                            <p className='text-[35px] font-[700] text-center'>Featured Profile</p>
+                                        </section>
+                                        <section className='w-[100%] border-[1px] flex justify-center flex-col z-[0]'>
+                                            <div className='text-white mt-3'>
+                                                <Slider {...settings} className='z-0'>
+                                                    {
+                                                        homefeatureddata.map((items, index) => {
+                                                            return (
+                                                                <div className='px-1 z-0'>
+                                                                    <div className='bg-[#ffffff] rounded-[20px]'>
+                                                                        <div className='w-[100%] pb-2 overflow-hidden relative'>
+                                                                            <div className='absolute right-[15px] top-[15px] flex '>
+                                                                                <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={()=>updatedata(items)}><FaEdit/></section>
+                                                                                 <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
+                                                                            </div>
+                                                                            <div className='rounded-t-[20px] h-[370px] flex justify-center items-center overflow-hidden'>
+                                                                                <img src={imgurl + items.Featured_Profile_Card_Image} alt="" className='w-[100%] h-[100%]' />
+                                                                            </div>
+                                                                            <div className='mt-[10px] text-black px-2'>
+                                                                                <p className='' style={{ fontWeight: items.Featured_Profile_Card_Section_Name_Text_Bold, fontSize: items.Featured_Profile_Card_Section_Name_Font_Size + 'px', textAlign: items.Featured_Profile_Card_Section_Name_Text_Align, textDecoration: items.Featured_Profile_Card_Section_Name_Text_Decoration, color: items.Featured_Profile_Card_Section_Home_Name_Color, lineHeight: items.Featured_Profile_Card_Section_Name_Text_Line + 'px' }}>{items.Featured_Profile_Card_Section_Name_Heading}</p>
+                                                                                <p className='' style={{ fontWeight: items.Featured_Profile_Age_Text_Bold, fontSize: items.Featured_Profile_Age_Font_Size + 'px', textAlign: items.Featured_Profile_Age_Text_Align, textDecoration: items.Featured_Profile_Age_Text_Decoration, color: items.Featured_Profile_Age_Color, lineHeight: items.Featured_Profile_Age_Text_Line + 'px' }}>{items.Featured_Profile_Card_Section_Age_Heading} Years</p>
+                                                                                <p className='' style={{ fontWeight: items.Featured_Profile_Location_Text_Bold, fontSize: items.Featured_Profile_Location_Font_Size + 'px', textAlign: items.Featured_Profile_Location_Text_Align, textDecoration: items.Featured_Profile_Location_Text_Decoration, color: items.Featured_Profile_Location_Color, lineHeight: items.Featured_Profile_Location_Text_Line + 'px' }}>{items.Featured_Profile_Card_Section_Location_Heading}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                                </Slider>
                                             </div>
-                                        </div>
-
-                                        <div className='px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 overflow-hidden'>
-                                                    <div className='rounded-t-[20px] overflow-hidden'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className='mt-[10px] text-black px-2'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div className='px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 overflow-hidden'>
-                                                    <div className='rounded-t-[20px] overflow-hidden'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className='mt-[10px] text-black px-2'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div className='px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 overflow-hidden'>
-                                                    <div className='rounded-t-[20px] overflow-hidden'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className='mt-[10px] text-black px-2'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Slider>
-                                </div>
-                            </section>
+                                        </section>
+                                    </>
+                            }
                         </section>
+
 
 
                         <section className='main_banner_2 p-[30px] text-center bg-[#460b5e]'>
@@ -354,110 +498,54 @@ export function HomeLayout() {
 
 
                         <section className='w-[100%] px-2 py-5 bg-[#f3d6ff] z-0'>
-                            <section>
-                                <p className='text-[35px] font-[700] text-center'>Success Stories</p>
-                            </section>
-                            <section className='w-[100%] border-[1px] flex justify-center flex-col z-[0]'>
-                                <div className='text-white mt-3'>
-                                    <Slider {...settings} className='z-0'>
-                                        <div className=' px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 '>
-                                                    <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className=' text-black p-2 rounded-b-[20px] bg-[white]'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
+                            {
+                                homesuccessdata.length === 0 ?
+                                    <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                    :
+
+                                    <>  <section>
+                                        <p className='text-[35px] font-[700] text-center'>Success Stories</p>
+                                    </section>
+                                        <section className='w-[100%] border-[1px] flex justify-center flex-col z-[0]'>
+                                            <div className='text-white mt-3'>
+                                                <Slider {...settings} className='z-0'>
+                                                    {
+                                                        homesuccessdata.map((items, index) => {
+                                                            console.log(items)
+                                                            return (
+                                                                <div className=' px-1 z-0 mt-[5px]'>
+                                                                    <div className='bg-[#ffffff] rounded-[20px]'>
+                                                                        <div className='w-[100%] pb-2 '>
+                                                                        
+                                                                            <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
+                                                                                <img src={imgurl + items.Success_Stories_Card_Image} alt="" className='w-[100%]' />
+                                                                            </div>
+                                                                            <div className=' text-black p-2 rounded-b-[20px] bg-[white] relative'>
+                                                                            <div className='absolute right-[15px] top-[15px] flex '>
+                                                                                <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={()=>updatedata(items)}><FaEdit/></section>
+                                                                                 <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
+                                                                            </div>
+                                                                                <p className='font-[700]' style={{ fontWeight: items.Success_Stories_Card_Section_Name_Text_Bold, fontSize: items.Success_Stories_Card_Section_Name_Font_Size + 'px', textAlign: items.Success_Stories_Card_Section_Name_Text_Align, textDecoration: items.Success_Stories_Card_Section_Name_Text_Decoration, color: items.Success_Stories_Card_Section_Home_Name_Color, lineHeight: items.Success_Stories_Card_Section_Name_Text_Line + 'px' }}>{items.Success_Stories_Card_Section_Name_Heading}</p>
+                                                                                <p className='text-[grey]' style={{ fontWeight: items.Success_Stories_Marriage_Date_Text_Bold, fontSize: items.Success_Stories_Marriage_Date_Font_Size + 'px', textAlign: items.Success_Stories_Marriage_Date_Text_Align, textDecoration: items.Success_Stories_Marriage_Date_Text_Decoration, color: items.Success_Stories_Marriage_Date_Color, lineHeight: items.Success_Stories_Marriage_Date_Text_Line + 'px' }}>{items.Success_Stories_Card_Section_Marriage_Date_Heading}</p>
+                                                                                <p className='text-[grey]' style={{ fontWeight: items.Success_Stories_Description_Text_Bold, fontSize: items.Success_Stories_Description_Font_Size + 'px', textAlign: items.Success_Stories_Description_Text_Align, textDecoration: items.Success_Stories_Description_Text_Decoration, color: items.Success_Stories_Description_Color, lineHeight: items.Success_Stories_Description_Text_Line + 'px' }}>{items.Success_Stories_Card_Section_Description_Heading.slice(0, 200)}
+                                                                                    <span className='underline text-sky-400 ms-2'>
+                                                                                        Readmore
+                                                                                    </span>
+                                                                                </p>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+
+                                                </Slider>
                                             </div>
-                                        </div>
-
-
-                                        <div className=' px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 '>
-                                                    <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className=' text-black p-2 rounded-b-[20px] bg-[white]'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div className=' px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 '>
-                                                    <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className=' text-black p-2 rounded-b-[20px] bg-[white]'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div className=' px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 '>
-                                                    <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className=' text-black p-2 rounded-b-[20px] bg-[white]'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div className=' px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 '>
-                                                    <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className=' text-black p-2 rounded-b-[20px] bg-[white]'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div className=' px-1 z-0'>
-                                            <div className='bg-[#ffffff] rounded-[20px]'>
-                                                <div className='w-[100%] pb-2 '>
-                                                    <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
-                                                        <img src={banner} alt="" className='w-[100%]' />
-                                                    </div>
-                                                    <div className=' text-black p-2 rounded-b-[20px] bg-[white]'>
-                                                        <p className='font-[700]'>Vershab jangid</p>
-                                                        <p className='text-[grey]'>29 Years, 5.6</p>
-                                                        <p className='text-[grey] '>Software Engineer</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </Slider>
-                                </div>
-                            </section>
+                                        </section>
+                                    </>
+                            }
                         </section>
                         <Footer />
                     </section >
