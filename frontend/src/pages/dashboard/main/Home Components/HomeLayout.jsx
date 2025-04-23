@@ -16,57 +16,57 @@ export function HomeLayout() {
     let notificationsuccess = (success) => toast.success(success)
     let notificationerror = (error) => toast.error(error)
 
-   
-      let fetch = async () => {
-             try {
-                 let [homebanner, homecounter, homewhychoose, homefeatured, homesuccess] = await Promise.all([
-                     api.get('/view-home-banner'),
-                     api.get('/view-homecounter'),
-                     api.get('/view-home-why-choose'),
-                     api.get('/view-home-featured'),
-                     api.get('/view-home-success')
-                 ])
-                 return {
-                     homebanners: homebanner.data.viewdata,
-                     homecounters: homecounter.data,
-                     homewhychooses: homewhychoose.data,
-                     homefeatures: homefeatured.data,
-                     homesuccessstories: homesuccess.data,
-                     imgurl: homebanner.data.url
-                 }
-             }
-             catch (error) {
-                 console.log(error)
-             }
-         }
-     
-         let [homebannerdata, sethomebannerdata] = useState([])
-         let [homebannercounter, sethomebannercounter] = useState([])
-         let [homewhychoosedata, sethomewhychoosedata] = useState([])
-         let [homefeatureddata, sethomefeatureddata] = useState([])
-         let [homesuccessdata, sethomesuccessdata] = useState([])
-         let [imgurl, setimgurl] = useState([])
-         let finalfetch = () => {
-             fetch()
-                 .then((res) => {
-                     sethomebannerdata(res.homebanners)
-                     sethomebannercounter(res.homecounters)
-                     sethomewhychoosedata(res.homewhychooses)
-                     sethomefeatureddata(res.homefeatures)
-                     sethomesuccessdata(res.homesuccessstories)
-                     setimgurl(res.imgurl)
-                 })
-                 .catch((error) => {
-                     console.log(error)
-                 })
-         }
-     
-     
-         useEffect(() => {
-             finalfetch();
-         }, [])
 
-       
+    let fetch = async () => {
+        try {
+            let [homebanner, homecounter, homewhychoose, homefeatured, homesuccess] = await Promise.all([
+                api.get('/view-home-banner'),
+                api.get('/view-homecounter'),
+                api.get('/view-home-why-choose'),
+                api.get('/view-home-featured'),
+                api.get('/view-home-success')
+            ])
+            return {
+                homebanners: homebanner.data.viewdata,
+                homecounters: homecounter.data,
+                homewhychooses: homewhychoose.data,
+                homefeatures: homefeatured.data,
+                homesuccessstories: homesuccess.data,
+                imgurl: homebanner.data.url
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    let [homebannerdata, sethomebannerdata] = useState([])
+    let [homebannercounter, sethomebannercounter] = useState([])
+    let [homewhychoosedata, sethomewhychoosedata] = useState([])
+    let [homefeatureddata, sethomefeatureddata] = useState([])
+    let [homesuccessdata, sethomesuccessdata] = useState([])
+    let [imgurl, setimgurl] = useState([])
+    let finalfetch = () => {
+        fetch()
+            .then((res) => {
+                sethomebannerdata(res.homebanners)
+                sethomebannercounter(res.homecounters)
+                sethomewhychoosedata(res.homewhychooses)
+                sethomefeatureddata(res.homefeatures)
+                sethomesuccessdata(res.homesuccessstories)
+                setimgurl(res.imgurl)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+
+    useEffect(() => {
+        finalfetch();
+    }, [])
+
+
     console.log(imgurl)
 
     var settings = {
@@ -130,160 +130,160 @@ export function HomeLayout() {
 
 
     let [modal, setmodal] = useState(false);
-        let [modaldata, setmodaldata] = useState("");
-    
-        let deletedata = (value) => {
-            if (value.Banner_Image) {
-                try {
-                    api.delete('/delete-home-banner', {
-                        data: value,
-                        headers: {
-                            Authorization: getCookie('AdminToken')
+    let [modaldata, setmodaldata] = useState("");
+
+    let deletedata = (value) => {
+        if (value.Banner_Image) {
+            try {
+                api.delete('/delete-home-banner', {
+                    data: value,
+                    headers: {
+                        Authorization: getCookie('AdminToken')
+                    }
+                })
+                    .then((res) => {
+                        if (res.data.Status === 1) {
+                            notificationsuccess(res.data.Message)
+                            finalfetch()
+                            setloader(false)
+                            setmodal(false)
+                        }
+                        else {
+                            notificationerror(res.data.Message)
+                            setloader(false)
+                            setmodal(false)
                         }
                     })
-                        .then((res) => {
-                            if (res.data.Status === 1) {
-                                notificationsuccess(res.data.Message)
-                                finalfetch()
-                                setloader(false)
-                                setmodal(false)
-                            }
-                            else {
-                                notificationerror(res.data.Message)
-                                setloader(false)
-                                setmodal(false)
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
-                }
-                catch (error) {
-                    console.log(error)
-                }
-            }
-            else if (value.Counter_Title) {
-                try {
-                    api.delete('/delete-homecounter', {
-                        data: value,
-                        headers: {
-                            Authorization: getCookie('AdminToken')
-                        }
+                    .catch((error) => {
+                        console.log(error)
                     })
-                        .then((res) => {
-                            if (res.data.Status === 1) {
-                                notificationsuccess(res.data.Message)
-                                finalfetch()
-                                setloader(false)
-                                setmodal(false)
-                            }
-                            else {
-                                notificationerror(res.data.Message)
-                                setloader(false)
-                                setmodal(false)
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
-                }
-                catch (error) {
-                    console.log(error)
-                }
             }
-            else if (value.Why_Choose_Card_Icon) {
-                try {
-                    api.delete('/delete-home-why-choose', {
-                        data: value,
-                        headers: {
-                            Authorization: getCookie('AdminToken')
-                        }
-                    })
-                        .then((res) => {
-                            if (res.data.Status === 1) {
-                                notificationsuccess(res.data.Message)
-                                finalfetch()
-                                setloader(false)
-                                setmodal(false)
-                            }
-                            else {
-                                notificationerror(res.data.Message)
-                                setloader(false)
-                                setmodal(false)
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
-                }
-                catch (error) {
-                    console.log(error)
-                }
+            catch (error) {
+                console.log(error)
             }
-            else if (value.Featured_Profile_Card_Section_Name_Heading) {
-                try {
-                    api.delete('/delete-home-featured', {
-                        data: value,
-                        headers: {
-                            Authorization: getCookie('AdminToken')
-                        }
-                    })
-                        .then((res) => {
-                            if (res.data.Status === 1) {
-                                notificationsuccess(res.data.Message)
-                                finalfetch()
-                                setloader(false)
-                                setmodal(false)
-                            }
-                            else {
-                                notificationerror(res.data.Message)
-                                setloader(false)
-                                setmodal(false)
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
-                }
-                catch (error) {
-                    console.log(error)
-                }
-            }
-            else if (value.Success_Stories_Card_Image) {
-                try {
-                    api.delete('/delete-home-success', {
-                        data: value,
-                        headers: {
-                            Authorization: getCookie('AdminToken')
-                        }
-                    })
-                        .then((res) => {
-                            if (res.data.Status === 1) {
-                                notificationsuccess(res.data.Message)
-                                finalfetch()
-                                setloader(false)
-                                setmodal(false)
-                            }
-                            else {
-                                notificationerror(res.data.Message)
-                                setloader(false)
-                                setmodal(false)
-                            }
-                        })
-                        .catch((error) => {
-                            console.log(error)
-                        })
-                }
-                catch (error) {
-                    console.log(error)
-                }
-            }
-    
         }
+        else if (value.Counter_Title) {
+            try {
+                api.delete('/delete-homecounter', {
+                    data: value,
+                    headers: {
+                        Authorization: getCookie('AdminToken')
+                    }
+                })
+                    .then((res) => {
+                        if (res.data.Status === 1) {
+                            notificationsuccess(res.data.Message)
+                            finalfetch()
+                            setloader(false)
+                            setmodal(false)
+                        }
+                        else {
+                            notificationerror(res.data.Message)
+                            setloader(false)
+                            setmodal(false)
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        else if (value.Why_Choose_Card_Icon) {
+            try {
+                api.delete('/delete-home-why-choose', {
+                    data: value,
+                    headers: {
+                        Authorization: getCookie('AdminToken')
+                    }
+                })
+                    .then((res) => {
+                        if (res.data.Status === 1) {
+                            notificationsuccess(res.data.Message)
+                            finalfetch()
+                            setloader(false)
+                            setmodal(false)
+                        }
+                        else {
+                            notificationerror(res.data.Message)
+                            setloader(false)
+                            setmodal(false)
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        else if (value.Featured_Profile_Card_Section_Name_Heading) {
+            try {
+                api.delete('/delete-home-featured', {
+                    data: value,
+                    headers: {
+                        Authorization: getCookie('AdminToken')
+                    }
+                })
+                    .then((res) => {
+                        if (res.data.Status === 1) {
+                            notificationsuccess(res.data.Message)
+                            finalfetch()
+                            setloader(false)
+                            setmodal(false)
+                        }
+                        else {
+                            notificationerror(res.data.Message)
+                            setloader(false)
+                            setmodal(false)
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        else if (value.Success_Stories_Card_Image) {
+            try {
+                api.delete('/delete-home-success', {
+                    data: value,
+                    headers: {
+                        Authorization: getCookie('AdminToken')
+                    }
+                })
+                    .then((res) => {
+                        if (res.data.Status === 1) {
+                            notificationsuccess(res.data.Message)
+                            finalfetch()
+                            setloader(false)
+                            setmodal(false)
+                        }
+                        else {
+                            notificationerror(res.data.Message)
+                            setloader(false)
+                            setmodal(false)
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+
+    }
     return (
         <>
 
-{
+            {
                 modal ? <section className='w-[100%] h-[100vh] fixed z-[60] bg-[#ffffff98] top-0 left-0 flex justify-center items-center'>
                     <div className='w-[450px] border-[1px] border-[black] p-2 py-5 bg-[white] text-center rounded-[10px]'>
                         <p className='text-[22px]'>Are Your Sure?</p>
@@ -301,7 +301,7 @@ export function HomeLayout() {
             }
 
 
-         {
+            {
                 loader ? <Loader />
                     : <section className='main'>
                         <Header />
@@ -314,7 +314,7 @@ export function HomeLayout() {
                                 homebannerdata.map((items, index) => {
                                     return (
                                         <section key={index} className='home_banner w-[100%] px-2 flex justify-between bg-[#460b5e] relative' style={(items.Banner_direction === 'right') ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }}>
-                                            <section className='text-[red] absolute right-[20px] top-[20px] text-[25px] cursor-pointer' onClick={()=>updatedata(items)}><FaEdit/></section>
+                                            <section className='text-[red] absolute right-[20px] top-[20px] text-[25px] cursor-pointer' onClick={() => updatedata(items)}><FaEdit /></section>
                                             <section className='home_banner_content  w-[50%] flex justify-center flex-col'>
                                                 <h1 style={{ fontWeight: items.Heading_Font_Bold, fontSize: items.Heading_Font_Size + 'px', lineHeight: items.Heading_Line_Height + 'px', textAlign: items.Heading_Text_Align, color: items.Heading_Text_Color, textDecoration: items.Heading_Text_Decoration }}>{items.Heading} </h1>
                                                 <p className='text-[white] text-[18px] mt-3' style={{ fontWeight: items.Sub_Heading_Font_Bold, fontSize: items.Sub_Heading_Font_Size + 'px', lineHeight: items.Sub_Heading_Line_Height + 'px', textAlign: items.Sub_Heading_Text_Align, color: items.Sub_Heading_Text_Color, textDecoration: items.Sub_Heading_Text_Decoration }}>{items.Sub_Heading}</p>
@@ -347,7 +347,7 @@ export function HomeLayout() {
                                                     homebannercounter.map((items, index) => {
                                                         return (
                                                             <div className='px-3 relative' key={index}>
-                                                                  <RiDeleteBin5Fill className='absolute right-[25px] top-[15px] text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
+                                                                <RiDeleteBin5Fill className='absolute right-[25px] top-[15px] text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
                                                                 <div className='bg-[#ffffff] rounded-[20px] py-3 mb-3'>
                                                                     <div className='w-[100%]'>
                                                                         <div className='mt-[10px] text-black px-2  text-center'>
@@ -372,34 +372,34 @@ export function HomeLayout() {
 
                         <section className='main_banner_2 py-[15px] text-center bg-[#eab6ff]'>
                             {
-                                 homewhychoosedata.length === 0 ?
-                                 <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
-                                  :
-                                  <>
-                                   <h2 className='text-[30px] font-[700] mb-[20px]'>Why Choose Us</h2>
-                            <section className='flex justify-evenly  flex-wrap text-start ' style={{ width: "100%" }}>
-                            {homewhychoosedata.map((items, index) => {
-                                    return (
-                                <section key={index} className='w-[330px] p-[10px]  m-[10px] relative' style={{ backgroundColor: "#FFFF", borderRadius: "7px", boxShadow: "5px 5px 5px 0px #00000057" }}>
-                                   <div className='absolute right-[15px] top-[15px] flex'>
-                                   <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={()=>updatedata(items)}><FaEdit/></section>
-                                   <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
-                                   </div>
-                                    <div className='w-[100%] overflow-hidden rounded-t-[10px]'>
-                                        <div className='w-[50px] h-[50px] rounded-[100px] flex justify-center items-center text-[20px] overflow-hidden bg-[#be4fea] text-[#460b5e]'>
-                                            <img src={`${imgurl}` + `${items.Why_Choose_Card_Icon}`} className='w-[100%] flex justify-center items-center' />
-                                        </div>
-                                    </div>
-                                    <div className='w-[100%] rounded-t-[10px]'>
-                                        <p className='mt-[5px]' style={{ fontSize: items.Why_Choose_Card_Section_Head_Font_Size + 'px', textAlign: items.Why_Choose_Card_Section_Head_Text_Align, fontWeight: items.Why_Choose_Card_Section_Head_Text_Bold, textDecoration: items.Why_Choose_Card_Section_Head_Text_Decoration, lineHeight: items.Why_Choose_Card_Section_Head_Text_Line + 'px', color: items.Why_Choose_Card_Section_Home_Heading_Color }}>{items.Why_Choose_Card_Section_Home_Heading}</p>
-                                        <p className='' style={{ fontSize: items.Why_Choose_Sub_Head_Font_Size + 'px', textAlign: items.Why_Choose_Sub_Head_Text_Align, fontWeight: items.Why_Choose_Sub_Head_Text_Bold, textDecoration: items.Why_Choose_Sub_Head_Text_Decoration, lineHeight: items.Why_Choose_Sub_Head_Text_Line + 'px', color: items.Why_Choose_Sub_Home_Heading_Color }}>{items.Why_Choose_Card_Section_Sub_Home_Heading}</p>
-                                              </div>
-                                       </section>
-                                          )
-                                    })
-                                 } 
-                            </section>
-                         </>
+                                homewhychoosedata.length === 0 ?
+                                    <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                    :
+                                    <>
+                                        <h2 className='text-[30px] font-[700] mb-[20px]'>Why Choose Us</h2>
+                                        <section className='flex justify-evenly  flex-wrap text-start ' style={{ width: "100%" }}>
+                                            {homewhychoosedata.map((items, index) => {
+                                                return (
+                                                    <section key={index} className='w-[330px] p-[10px]  m-[10px] relative' style={{ backgroundColor: "#FFFF", borderRadius: "7px", boxShadow: "5px 5px 5px 0px #00000057" }}>
+                                                        <div className='absolute right-[15px] top-[15px] flex'>
+                                                            <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={() => updatedata(items)}><FaEdit /></section>
+                                                            <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
+                                                        </div>
+                                                        <div className='w-[100%] overflow-hidden rounded-t-[10px]'>
+                                                            <div className='w-[50px] h-[50px] rounded-[100px] flex justify-center items-center text-[20px] overflow-hidden bg-[#be4fea] text-[#460b5e]'>
+                                                                <img src={`${imgurl}` + `${items.Why_Choose_Card_Icon}`} className='w-[100%] flex justify-center items-center' />
+                                                            </div>
+                                                        </div>
+                                                        <div className='w-[100%] rounded-t-[10px]'>
+                                                            <p className='mt-[5px]' style={{ fontSize: items.Why_Choose_Card_Section_Head_Font_Size + 'px', textAlign: items.Why_Choose_Card_Section_Head_Text_Align, fontWeight: items.Why_Choose_Card_Section_Head_Text_Bold, textDecoration: items.Why_Choose_Card_Section_Head_Text_Decoration, lineHeight: items.Why_Choose_Card_Section_Head_Text_Line + 'px', color: items.Why_Choose_Card_Section_Home_Heading_Color }}>{items.Why_Choose_Card_Section_Home_Heading}</p>
+                                                            <p className='' style={{ fontSize: items.Why_Choose_Sub_Head_Font_Size + 'px', textAlign: items.Why_Choose_Sub_Head_Text_Align, fontWeight: items.Why_Choose_Sub_Head_Text_Bold, textDecoration: items.Why_Choose_Sub_Head_Text_Decoration, lineHeight: items.Why_Choose_Sub_Head_Text_Line + 'px', color: items.Why_Choose_Sub_Home_Heading_Color }}>{items.Why_Choose_Card_Section_Sub_Home_Heading}</p>
+                                                        </div>
+                                                    </section>
+                                                )
+                                            })
+                                            }
+                                        </section>
+                                    </>
                             }
                         </section>
 
@@ -426,8 +426,8 @@ export function HomeLayout() {
                                                                     <div className='bg-[#ffffff] rounded-[20px]'>
                                                                         <div className='w-[100%] pb-2 overflow-hidden relative'>
                                                                             <div className='absolute right-[15px] top-[15px] flex '>
-                                                                                <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={()=>updatedata(items)}><FaEdit/></section>
-                                                                                 <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
+                                                                                <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={() => updatedata(items)}><FaEdit /></section>
+                                                                                <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
                                                                             </div>
                                                                             <div className='rounded-t-[20px] h-[370px] flex justify-center items-center overflow-hidden'>
                                                                                 <img src={imgurl + items.Featured_Profile_Card_Image} alt="" className='w-[100%] h-[100%]' />
@@ -516,15 +516,15 @@ export function HomeLayout() {
                                                                 <div className=' px-1 z-0 mt-[5px]'>
                                                                     <div className='bg-[#ffffff] rounded-[20px]'>
                                                                         <div className='w-[100%] pb-2 '>
-                                                                        
+
                                                                             <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
                                                                                 <img src={imgurl + items.Success_Stories_Card_Image} alt="" className='w-[100%]' />
                                                                             </div>
-                                                                            <div className=' text-black p-2 rounded-b-[20px] bg-[white] relative'>
-                                                                            <div className='absolute right-[15px] top-[15px] flex '>
-                                                                                <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={()=>updatedata(items)}><FaEdit/></section>
-                                                                                 <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
-                                                                            </div>
+                                                                            <div className=' text-black p-2 rounded-b-[20px] h-[200px] bg-[white] relative'>
+                                                                                <div className='absolute right-[15px] top-[15px] flex '>
+                                                                                    <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={() => updatedata(items)}><FaEdit /></section>
+                                                                                    <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
+                                                                                </div>
                                                                                 <p className='font-[700]' style={{ fontWeight: items.Success_Stories_Card_Section_Name_Text_Bold, fontSize: items.Success_Stories_Card_Section_Name_Font_Size + 'px', textAlign: items.Success_Stories_Card_Section_Name_Text_Align, textDecoration: items.Success_Stories_Card_Section_Name_Text_Decoration, color: items.Success_Stories_Card_Section_Home_Name_Color, lineHeight: items.Success_Stories_Card_Section_Name_Text_Line + 'px' }}>{items.Success_Stories_Card_Section_Name_Heading}</p>
                                                                                 <p className='text-[grey]' style={{ fontWeight: items.Success_Stories_Marriage_Date_Text_Bold, fontSize: items.Success_Stories_Marriage_Date_Font_Size + 'px', textAlign: items.Success_Stories_Marriage_Date_Text_Align, textDecoration: items.Success_Stories_Marriage_Date_Text_Decoration, color: items.Success_Stories_Marriage_Date_Color, lineHeight: items.Success_Stories_Marriage_Date_Text_Line + 'px' }}>{items.Success_Stories_Card_Section_Marriage_Date_Heading}</p>
                                                                                 <p className='text-[grey]' style={{ fontWeight: items.Success_Stories_Description_Text_Bold, fontSize: items.Success_Stories_Description_Font_Size + 'px', textAlign: items.Success_Stories_Description_Text_Align, textDecoration: items.Success_Stories_Description_Text_Decoration, color: items.Success_Stories_Description_Color, lineHeight: items.Success_Stories_Description_Text_Line + 'px' }}>{items.Success_Stories_Card_Section_Description_Heading.slice(0, 200)}
@@ -553,23 +553,3 @@ export function HomeLayout() {
         </>
     )
 }
-
-
-
-
-
-
-
-
-
-// export function Home() {
-//
-
-
-//     return (
-//         <>
-           
-
-//         </>
-//     )
-// }

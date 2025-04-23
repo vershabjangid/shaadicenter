@@ -43,6 +43,10 @@ import { DashUpdateHomeBanner } from './pages/dashboard/main/Home Components/Das
 import { DashUpdateHomeWhyChoose } from './pages/dashboard/main/Home Components/DashUpdateHomeWhyChoose';
 import { DashUpdateHomeFeaturedProfile } from './pages/dashboard/main/Home Components/DashUpdateHomeFeaturedProfile';
 import { DashUpdateSuccessStories } from './pages/dashboard/main/Home Components/DashUpdateSuccessStories';
+import { AboutUs } from './pages/website/main/AboutUs';
+import { DashAbout } from './pages/dashboard/main/DashAbout';
+import { AboutLayout } from './pages/dashboard/main/About Components/AboutLayout';
+import { DashUpdateAboutBanner } from './pages/dashboard/main/About Components/DashUpdateAboutBanner';
 
 function App() {
   return (
@@ -51,6 +55,7 @@ function App() {
         <Route path='*' element={<Page404 />} />
         <Route path='/error' element={<SomethingWentWrong />} />
         <Route path='/' element={<Home />} />
+        <Route path='/about' element={<AboutUs />} />
         <Route path='/sign-in' element={<Login />} />
         <Route path='/sign-up' element={<Register />} />
         <Route path='/otp-verification/:Email' element={<OtpVerification />} />
@@ -74,13 +79,16 @@ function App() {
         <Route path='/dash-login' element={<DashLogin />} />
         <Route element={<DashPrivate />}>
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/dash-home' element={<DashHome />} />
           <Route path='/dash-users' element={<DashUsers />} />
+          <Route path='/dash-home' element={<DashHome />} />
           <Route path='/home-layout' element={<HomeLayout />} />
           <Route path='/dash-updatehomebanner' element={<DashUpdateHomeBanner />} />
           <Route path='/dash-updatehomewhychoose' element={<DashUpdateHomeWhyChoose />} />
           <Route path='/dash-updatefeaturedprofiles' element={<DashUpdateHomeFeaturedProfile />} />
-          <Route path='/dash-updatesucccessstories' element={<DashUpdateSuccessStories/>} />
+          <Route path='/dash-updatesucccessstories' element={<DashUpdateSuccessStories />} />
+          <Route path='/dash-about' element={<DashAbout />} />
+          <Route path='/about-layout' element={<AboutLayout />} />
+          <Route path='/dash-updateaboutbanner' element={<DashUpdateAboutBanner />} />
 
           <Route path='/view-users-profile/:_id' element={<DashUserProfile />} />
           <Route path='/dash-religions' element={<DashReligion />} />

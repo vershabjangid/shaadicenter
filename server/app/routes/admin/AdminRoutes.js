@@ -7,6 +7,7 @@ const multer = require('multer')
 const path = require('path')
 const { viewuserprofile } = require('../../controller/web/WebAuth');
 const { addhomebannercontroller, updatehomebanner, viewhomebanner, addhomecounter, viewhomecounters, deletecounters, Homewhychoosecontroller, viewhomewhychoose, deletehomewhychoose, updatehomewhychoose, Homefeaturedprofilecontroller, viewhomefeaturedprofile, deletehomefeaturedprofile, updatehomefeaturedprofile, Homesuccessstoriescontroller, viewhomesuccessstories, deletehomesuccessstories, updatesuccessstories } = require('../../controller/admin/HomeController');
+const { addaboutbannercontroller, viewaboutbanner, updateaboutbanner, addaboutparagraphcontroller, viewaboutparagraph, addaboutsubparagraphcontroller, viewsubaboutparagraph } = require('../../controller/admin/AboutController');
 
 
 let userAuth = (req, res, next) => {
@@ -63,7 +64,7 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage }).any('Banner_Image', 'Why_Choose_Card_Icon', 'Featured_Profile_Card_Image', 'Success_Stories_Card_Image')
+const upload = multer({ storage: storage }).any('Banner_Image', 'Why_Choose_Card_Icon', 'Featured_Profile_Card_Image', 'Success_Stories_Card_Image', 'AboutBanner', 'AboutParagraphBanner')
 
 
 
@@ -168,6 +169,22 @@ Adminroutes.get('/view-home-success', viewhomesuccessstories)
 Adminroutes.delete('/delete-home-success', userAuth, verifytoken, deletehomesuccessstories)
 Adminroutes.put('/update-home-success', userAuth, verifytoken, upload, updatesuccessstories)
 
+
+//about page controller 
+Adminroutes.post('/add-about-banner', userAuth, verifytoken, upload, addaboutbannercontroller)
+Adminroutes.get('/view-about-banner', viewaboutbanner)
+Adminroutes.put('/update-about-banner', userAuth, verifytoken, upload, updateaboutbanner)
+
+
+//about paragraph controller 
+Adminroutes.post('/add-about-paragraph', userAuth, verifytoken, upload, addaboutparagraphcontroller)
+Adminroutes.get('/view-about-paragraph', viewaboutparagraph)
+// Adminroutes.put('/update-about-banner', userAuth, verifytoken, upload, updateaboutbanner)
+
+
+//about sub paragraph controller 
+Adminroutes.post('/add-about-sub-paragraph', userAuth, verifytoken, upload, addaboutsubparagraphcontroller)
+Adminroutes.get('/view-about-sub-paragraph', viewsubaboutparagraph)
 
 Adminroutes.post('/view-user-profile', userAuth, verifytoken, viewuserprofile)
 

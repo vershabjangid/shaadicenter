@@ -88,10 +88,10 @@ export function Header() {
 
                 <nav className='options'>
                     <ul className='flex'>
-                        <li><Link className='ms-[30px]'>Home</Link></li>
+                        <li><Link to={"/"} className='ms-[30px]'>Home</Link></li>
                         {
                             getcookie ? <li><Link className='ms-[30px]'>Search</Link></li> : null}
-                        <li><Link className='ms-[30px]'>About Us</Link></li>
+                        <li><Link to={"/about"} className='ms-[30px]'>About Us</Link></li>
                         <li><Link className='ms-[30px]'>Contact US</Link></li>
                     </ul>
                 </nav>
