@@ -9,7 +9,7 @@ require('dotenv').config();
 app.use('/uploads', Express.static('uploads'))
 
 app.use(cors({
-    origin: "http://localhost:3000",// Allow frontend domain
+    origin: ["https://shaadicenter.org/","https://www.shaadicenter.org/"],// Allow frontend domain
     credentials: true // Allow cookies/session
 }))
 

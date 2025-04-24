@@ -10,7 +10,7 @@ export function Footer() {
                     <section className='m-5'>
                         <p className='font-[600] text-[20px]'>Shaadi Center</p>
                         <div className='flex justify-between text-[18px]'>
-                            <p className='my-1'><FaInstagram /></p>
+                            <a href='https://www.instagram.com/shadicenter009/' className='my-1'><FaInstagram /></a>
                             <p className='my-1'><FaFacebook /></p>
                             <p className='my-1'><FaXTwitter /></p>
                             <p className='my-1'><FaLinkedin /></p>
@@ -32,9 +32,9 @@ export function Footer() {
                     </section>
                     <section className='m-5'>
                         <p className='font-[600] text-[20px]'>Contact Us</p>
-                        <p className='flex items-end my-1'><FaEnvelope className='me-2' /> jangidvershab23@gmail.com</p>
-                        <p className='flex items-end my-1'><FaPhoneAlt className='me-2' /> +91 9351858094</p>
-                        <p className='flex items-end my-1'><FaLocationPin className='me-2' /> New York, NY 10001</p>
+                        <p className='flex items-end my-1'><FaEnvelope className='me-2' /> shadichenter391@gmail.com</p>
+                        <p className='flex items-end my-1'><FaPhoneAlt className='me-2' /> +91 8690242204</p>
+                        <p className='flex items-end my-1'><FaLocationPin className='me-2' /> Aakliya circle, jodhpur, rajasthan</p>
                     </section>
                 </section>
                 <section className=' border-t-2 border-[white] flex justify-center py-4 pt-5'>

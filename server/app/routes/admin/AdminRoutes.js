@@ -7,7 +7,7 @@ const multer = require('multer')
 const path = require('path')
 const { viewuserprofile } = require('../../controller/web/WebAuth');
 const { addhomebannercontroller, updatehomebanner, viewhomebanner, addhomecounter, viewhomecounters, deletecounters, Homewhychoosecontroller, viewhomewhychoose, deletehomewhychoose, updatehomewhychoose, Homefeaturedprofilecontroller, viewhomefeaturedprofile, deletehomefeaturedprofile, updatehomefeaturedprofile, Homesuccessstoriescontroller, viewhomesuccessstories, deletehomesuccessstories, updatesuccessstories } = require('../../controller/admin/HomeController');
-const { addaboutbannercontroller, viewaboutbanner, updateaboutbanner, addaboutparagraphcontroller, viewaboutparagraph, addaboutsubparagraphcontroller, viewsubaboutparagraph } = require('../../controller/admin/AboutController');
+const { addaboutbannercontroller, viewaboutbanner, updateaboutbanner, addaboutparagraphcontroller, viewaboutparagraph, addaboutsubparagraphcontroller, viewsubaboutparagraph, updateaboutparagraph, updateaboutsubparagraph, deleteparagraphheading, deleteaboutsubparagraph } = require('../../controller/admin/AboutController');
 
 
 let userAuth = (req, res, next) => {
@@ -179,12 +179,15 @@ Adminroutes.put('/update-about-banner', userAuth, verifytoken, upload, updateabo
 //about paragraph controller 
 Adminroutes.post('/add-about-paragraph', userAuth, verifytoken, upload, addaboutparagraphcontroller)
 Adminroutes.get('/view-about-paragraph', viewaboutparagraph)
-// Adminroutes.put('/update-about-banner', userAuth, verifytoken, upload, updateaboutbanner)
+Adminroutes.put('/update-about-paragraph', userAuth, verifytoken, upload, updateaboutparagraph)
+Adminroutes.delete('/delete-about-paragraph', userAuth, verifytoken, deleteparagraphheading)
 
 
 //about sub paragraph controller 
 Adminroutes.post('/add-about-sub-paragraph', userAuth, verifytoken, upload, addaboutsubparagraphcontroller)
 Adminroutes.get('/view-about-sub-paragraph', viewsubaboutparagraph)
+Adminroutes.put('/update-about-sub-paragraph', userAuth, verifytoken, upload, updateaboutsubparagraph)
+Adminroutes.delete('/delete-about-sub-paragraph', userAuth, verifytoken, deleteaboutsubparagraph)
 
 Adminroutes.post('/view-user-profile', userAuth, verifytoken, viewuserprofile)
 

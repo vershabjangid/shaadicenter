@@ -112,8 +112,8 @@ export function Header() {
 
                             <section className='flex items-center z-[10]'>
                                 <ul className='flex'>
-                                    <li className='bg-[red] py-[12px] px-[12px] rounded-[10px]'><Link to={"/sign-in"} className=''>Sign In</Link></li>
-                                    <li className='bg-[#e23f5a] py-[12px] px-[12px] rounded-[10px] mx-3'><Link to={"/sign-up"}>Sign Up</Link></li>
+                                    <Link to={"/sign-in"} className='border-[2px] border-[red] text-[red] py-[12px] px-[12px] rounded-[30px]'><span className=''>Sign In</span></Link>
+                                    <Link to={"/sign-up"} className='border-[2px] border-[#e23f5a] text-[#e23f5a] py-[12px] px-[12px] rounded-[30px] mx-3'><span >Sign Up</span></Link>
                                 </ul>
 
                                 {

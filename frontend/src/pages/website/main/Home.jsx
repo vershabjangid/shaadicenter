@@ -7,6 +7,7 @@ import Slider from "react-slick";
 import { BsChatHeartFill, BsQuestionCircle } from 'react-icons/bs'
 import { FaUserPlus } from 'react-icons/fa'
 import { api } from '../../../url/Url'
+import { Link } from 'react-router-dom'
 export function Home() {
     let [loader, setloader] = useState(false)
 
@@ -117,7 +118,7 @@ export function Home() {
                         <section className='w-[100%] h-[85px] bg-[red]'></section>
                         {
                             homebannerdata.length === 0 ?
-                                <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div> :
+                              null:
                                 homebannerdata.map((items, index) => {
                                     return (
                                         <section key={index} className='home_banner w-[100%] h-[100vh] flex justify-between bg-[#460b5e]' style={(items.Banner_direction === 'right') ? { flexDirection: 'row' } : { flexDirection: 'row-reverse' }}>
@@ -125,8 +126,8 @@ export function Home() {
                                                 <h1 className='mx-3' style={{ fontWeight: items.Heading_Font_Bold, fontSize: items.Heading_Font_Size + 'px', lineHeight: items.Heading_Line_Height + 'px', textAlign: items.Heading_Text_Align, color: items.Heading_Text_Color, textDecoration: items.Heading_Text_Decoration }}>{items.Heading} </h1>
                                                 <p className='text-[white] text-[18px] mt-3 mx-3' style={{ fontWeight: items.Sub_Heading_Font_Bold, fontSize: items.Sub_Heading_Font_Size + 'px', lineHeight: items.Sub_Heading_Line_Height + 'px', textAlign: items.Sub_Heading_Text_Align, color: items.Sub_Heading_Text_Color, textDecoration: items.Sub_Heading_Text_Decoration }}>{items.Sub_Heading}</p>
                                                 <div className='text-white mt-3 mx-3'>
-                                                    <button className='px-3 py-2 bg-[#ff40ff] rounded-[100px]'>Start Your Journey</button>
-                                                    <button className='px-3 py-2 border-[1px] border-[#ff40ff] rounded-[100px] ms-3 text-[#ff40ff]'>Learn More</button>
+                                                    <Link to={"/sign-up"} className='px-3 py-2 bg-[#ff40ff] rounded-[100px]'>Start Your Journey</Link>
+                                                    <Link to={"/about"} className='px-3 py-2 border-[1px] border-[#ff40ff] rounded-[100px] ms-3 text-[#ff40ff]'>Learn More</Link>
                                                 </div>
                                             </section>
                                             <section className='w-[50%] overflow-hidden flex justify-center items-center'>
@@ -146,7 +147,7 @@ export function Home() {
                                 <div className='text-white mt-3'>
                                     {
                                         homebannercounter.length === 0 ?
-                                            <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                           null
                                             :
                                             <Slider {...settings} className='z-0'>
                                                 {
@@ -175,10 +176,10 @@ export function Home() {
 
 
 
-                        <section className='main_banner_2 py-[10px] text-center bg-[#eab6ff]'>
+                        <section className='main_banner_2 py-[10px] text-center bg-[#f3d6ff]'>
                             {
                                 homewhychoosedata.length === 0 ?
-                                    <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                    null
                                     :
 
                                     <>
@@ -212,7 +213,7 @@ export function Home() {
                         <section className='w-[100%] px-2 py-3 bg-[#f3d6ff] z-0'>
                             {
                                 homefeatureddata.length === 0 ?
-                                    <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                  null
                                     :
                                     <>
                                         <section>
@@ -297,7 +298,7 @@ export function Home() {
                         <section className='w-[100%] px-2 py-5 bg-[#f3d6ff] z-0'>
                             {
                                 homesuccessdata.length === 0 ?
-                                    <div className='w-[100%] h-[100vh] bg-[#9d9d9d] flex justify-center items-center'>No Data Found</div>
+                                   null
                                     :
 
                                     <>  <section>

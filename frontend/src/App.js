@@ -47,6 +47,8 @@ import { AboutUs } from './pages/website/main/AboutUs';
 import { DashAbout } from './pages/dashboard/main/DashAbout';
 import { AboutLayout } from './pages/dashboard/main/About Components/AboutLayout';
 import { DashUpdateAboutBanner } from './pages/dashboard/main/About Components/DashUpdateAboutBanner';
+import { DashUpdateAboutParagraph } from './pages/dashboard/main/About Components/DashUpdateAboutParagraph';
+import { DashUpdateSubParagraph } from './pages/dashboard/main/About Components/DashUpdateSubParagraph';
 
 function App() {
   return (
@@ -89,6 +91,8 @@ function App() {
           <Route path='/dash-about' element={<DashAbout />} />
           <Route path='/about-layout' element={<AboutLayout />} />
           <Route path='/dash-updateaboutbanner' element={<DashUpdateAboutBanner />} />
+          <Route path='/dash-updateaboutparagraph' element={<DashUpdateAboutParagraph />} />
+          <Route path='/dash-updateaboutsubparagraph' element={<DashUpdateSubParagraph />} />
 
           <Route path='/view-users-profile/:_id' element={<DashUserProfile />} />
           <Route path='/dash-religions' element={<DashReligion />} />

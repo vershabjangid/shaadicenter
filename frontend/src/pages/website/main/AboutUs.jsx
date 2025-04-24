@@ -80,6 +80,7 @@ export function AboutUs() {
                             }
 
 
+
                             {
                                 aboutparagraphdata.map((items, index) => {
                                     if (!items.AboutParagraphBanner) {
@@ -87,13 +88,16 @@ export function AboutUs() {
                                             <>
                                                 <section className='w-[95%] m-auto px-5 py-3'>
                                                     <section className=' w-[100%] h-[100%] rounded-[15px] flex items-center'>
-                                                        <section className='w-[100%] mx-3'>
-                                                            <p className='mb-2 text-[30px] font-[600]'>{items.AboutParagraphHeading}</p>
+                                                        <section className='w-[100%] mx-3 relative'>
+                                                       
+                                                            <p className='mb-2' style={{ fontWeight: items.AboutParagraphHeadingFontBold, fontSize: items.AboutParagraphHeadingFontSize + 'px', textAlign: items.AboutParagraphHeadingFontAlign, textDecoration: items.AboutParagraphHeadingTextDecoration, color: items.AboutParagraphHeadingFontColor, lineHeight: items.AboutParagraphHeadingLineHeight + 'px' }}>{items.AboutParagraphHeading}</p>
                                                             {
                                                                 aboutsubparagraph.map((item, index) => {
                                                                     return (
                                                                         items.AboutParagraphHeading === item.AboutSubParagraphHeading ?
-                                                                            <p className='mt-[20px]'>{item.AboutParagraphSubHeading}</p>
+                                                                            <div className=' relative'>
+                                                                                <p className='mt-[20px]' style={{ fontWeight: item.AboutParagraphSubHeadingFontBold, fontSize: item.AboutParagraphSubHeadingFontSize + 'px', textAlign: item.AboutParagraphSubHeadingFontAlign, textDecoration: item.AboutParagraphSubHeadingTextDecoration, color: item.AboutParagraphSubHeadingFontColor, lineHeight: item.AboutParagraphSubHeadingLineHeight + 'px' }}>{item.AboutParagraphSubHeading}</p>
+                                                                            </div>
                                                                             :
                                                                             null
 
@@ -112,18 +116,22 @@ export function AboutUs() {
                                             <section className='w-[95%] m-auto  py-3'>
                                                 {
                                                     index % 2 === 0 ?
-                                                        <section className=' w-[100%] h-[100%] rounded-[15px] flex justify-between items-center p-5'>
+                                                        <section className=' w-[100%] h-[100%] rounded-[15px] flex justify-between items-center p-5 relative'>
+                                                           
                                                             <section className=' w-[400px] h-[400px] rounded-[15px] overflow-hidden flex justify-center items-center'>
                                                                 <img src={imgurl + items.AboutParagraphBanner} alt="" className='w-[100%] h-[100%]' />
                                                             </section>
 
                                                             <section className='w-[calc(100%-450px)]'>
-                                                                <p className='mb-2 text-[30px] font-[600]'>{items.AboutParagraphHeading}</p>
+                                                                <p className='mb-2 text-[30px]' style={{ fontWeight: items.AboutParagraphHeadingFontBold, fontSize: items.AboutParagraphHeadingFontSize + 'px', textAlign: items.AboutParagraphHeadingFontAlign, textDecoration: items.AboutParagraphHeadingTextDecoration, color: items.AboutParagraphHeadingFontColor, lineHeight: items.AboutParagraphHeadingLineHeight + 'px' }}>{items.AboutParagraphHeading}</p>
                                                                 {
                                                                     aboutsubparagraph.map((item, index) => {
                                                                         return (
                                                                             items.AboutParagraphHeading === item.AboutSubParagraphHeading ?
-                                                                                <p className='mt-[20px]'>{item.AboutParagraphSubHeading}</p>
+                                                                                <div className=' relative'>
+                                                                               
+                                                                                    <p className='mt-[20px]' style={{ fontWeight: item.AboutParagraphSubHeadingFontBold, fontSize: item.AboutParagraphSubHeadingFontSize + 'px', textAlign: item.AboutParagraphSubHeadingFontAlign, textDecoration: item.AboutParagraphSubHeadingTextDecoration, color: item.AboutParagraphSubHeadingFontColor, lineHeight: item.AboutParagraphSubHeadingLineHeight + 'px' }}>{item.AboutParagraphSubHeading}</p>
+                                                                                </div>
                                                                                 :
                                                                                 null
 
@@ -133,18 +141,21 @@ export function AboutUs() {
                                                             </section>
                                                         </section> :
 
-                                                        <section className=' w-[100%] h-[100%] rounded-[15px] flex justify-between items-center flex-row-reverse p-5'>
+                                                        <section className=' w-[100%] h-[100%] rounded-[15px] flex justify-between items-center flex-row-reverse p-5 relative'>
+                                                           
                                                             <section className=' w-[400px] h-[400px] rounded-[15px] overflow-hidden flex justify-center items-center'>
                                                                 <img src={imgurl + items.AboutParagraphBanner} alt="" className='w-[100%] h-[100%]' />
                                                             </section>
 
                                                             <section className='w-[calc(100%-450px)]'>
-                                                                <p className='mb-2 text-[30px] font-[600]'>{items.AboutParagraphHeading}</p>
+                                                                <p className='mb-2 text-[30px] font-[600]' style={{ fontWeight: items.AboutParagraphHeadingFontBold, fontSize: items.AboutParagraphHeadingFontSize + 'px', textAlign: items.AboutParagraphHeadingFontAlign, textDecoration: items.AboutParagraphHeadingTextDecoration, color: items.AboutParagraphHeadingFontColor, lineHeight: items.AboutParagraphHeadingLineHeight + 'px' }}>{items.AboutParagraphHeading}</p>
                                                                 {
                                                                     aboutsubparagraph.map((item, index) => {
                                                                         return (
                                                                             items.AboutParagraphHeading === item.AboutSubParagraphHeading ?
-                                                                                <p className='mt-[20px]'>{item.AboutParagraphSubHeading}</p>
+                                                                                <div className=' relative'>
+                                                                                    <p className='mt-[20px]' style={{ fontWeight: item.AboutParagraphSubHeadingFontBold, fontSize: item.AboutParagraphSubHeadingFontSize + 'px', textAlign: item.AboutParagraphSubHeadingFontAlign, textDecoration: item.AboutParagraphSubHeadingTextDecoration, color: item.AboutParagraphSubHeadingFontColor, lineHeight: item.AboutParagraphSubHeadingLineHeight + 'px' }}>{item.AboutParagraphSubHeading}</p>
+                                                                                </div>
                                                                                 :
                                                                                 null
 
@@ -160,10 +171,6 @@ export function AboutUs() {
                                     }
                                 })
                             }
-
-
-
-
 
 
 

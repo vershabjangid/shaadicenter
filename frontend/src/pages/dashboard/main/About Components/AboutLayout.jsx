@@ -3,9 +3,11 @@ import { Header } from '../../../../common/Header'
 import { Loader } from '../../../../common/Loader'
 import { Footer } from '../../../../common/Footer'
 import banner from '../../../../images/Gemini_Generated_Image_bnoy1ebnoy1ebnoy1.png'
-import { api } from '../../../../url/Url'
+import { api, getCookie } from '../../../../url/Url'
 import { FaEdit } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { RiDeleteBin5Fill } from 'react-icons/ri'
 export function AboutLayout() {
     let [loader, setloader] = useState(false)
 
@@ -34,7 +36,6 @@ export function AboutLayout() {
     let [aboutparagraphdata, setaboutparagraphdata] = useState([])
     let [aboutsubparagraph, setaboutsubparagraph] = useState([])
     let [imgurl, setimgurl] = useState([])
-    // console.log(aboutsubparagraph)
     let finalfetch = () => {
         viewalldata()
             .then((res) => {
@@ -55,23 +56,101 @@ export function AboutLayout() {
 
     let navigate = useNavigate();
     let updatedata = (value) => {
+        console.log(value)
         if (value.AboutBanner) {
             navigate('/dash-updateaboutbanner', { state: value })
         }
-        else if (value.Why_Choose_Card_Icon) {
-            navigate('/dash-updatehomewhychoose', { state: value })
+        else if (value.AboutParagraphBanner || value.AboutParagraphHeading) {
+            navigate('/dash-updateaboutparagraph', { state: value })
         }
-        else if (value.Featured_Profile_Card_Section_Name_Heading) {
-            navigate('/dash-updatefeaturedprofiles', { state: value })
-        }
-        else if (value.Success_Stories_Card_Image) {
-            navigate('/dash-updatesucccessstories', { state: value })
+        else if (value.AboutSubParagraphHeading) {
+            navigate('/dash-updateaboutsubparagraph', { state: value })
         }
     }
 
+    let [modal, setmodal] = useState(false);
+    let [modaldata, setmodaldata] = useState("");
 
+    let notificationsuccess = (success) => toast.success(success)
+    let notificationerror = (error) => toast.error(error)
+    let deletedata = (value) => {
+        if (value.AboutParagraphBanner || value.AboutParagraphHeading) {
+            try {
+                api.delete('/delete-about-paragraph', {
+                    data: value,
+                    headers: {
+                        Authorization: getCookie('AdminToken')
+                    }
+                })
+                    .then((res) => {
+                        if (res.data.Status === 1) {
+                            notificationsuccess(res.data.Message)
+                            finalfetch()
+                            setloader(false)
+                            setmodal(false)
+                        }
+                        else {
+                            notificationerror(res.data.Message)
+                            setloader(false)
+                            setmodal(false)
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        else if (value.AboutSubParagraphHeading) {
+            try {
+                api.delete('/delete-about-sub-paragraph', {
+                    data: value,
+                    headers: {
+                        Authorization: getCookie('AdminToken')
+                    }
+                })
+                    .then((res) => {
+                        if (res.data.Status === 1) {
+                            notificationsuccess(res.data.Message)
+                            finalfetch()
+                            setloader(false)
+                            setmodal(false)
+                        }
+                        else {
+                            notificationerror(res.data.Message)
+                            setloader(false)
+                            setmodal(false)
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+    }
     return (
         <>
+            {
+                modal ? <section className='w-[100%] h-[100vh] fixed z-[60] bg-[#ffffff98] top-0 left-0 flex justify-center items-center'>
+                    <div className='w-[450px] border-[1px] border-[black] p-2 py-5 bg-[white] text-center rounded-[10px]'>
+                        <p className='text-[22px]'>Are Your Sure?</p>
+                        <div className='flex justify-evenly mt-[20px]'>
+                            <button className='bg-[green] text-[white] px-5 py-3 rounded-[10px]' onClick={() => setmodal(false)}>
+                                Decline
+                            </button>
+
+                            <button className='bg-[red] text-[white] px-5 py-3 rounded-[10px]' onClick={() => deletedata(modaldata)}>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </section> : null
+            }
             {
                 loader ? <Loader />
                     : <section className='main'>
@@ -111,20 +190,22 @@ export function AboutLayout() {
                                     if (!items.AboutParagraphBanner) {
                                         return (
                                             <>
-                                                <section className='w-[95%] m-auto px-5 py-3'>
+                                                <section className='w-[95%] m-auto px-5 py-3 mt-3'>
                                                     <section className=' w-[100%] h-[100%] rounded-[15px] flex items-center'>
                                                         <section className='w-[100%] mx-3 relative'>
-                                                            <div className='absolute right-[0px] top-[-30px] text-[25px]' style={{ color: "black", zIndex: "9999" }} onClick={() => updatedata(items)}>
-                                                                <FaEdit />
+                                                            <div className='absolute right-[0px] top-[-30px] text-[25px] flex' style={{ color: "black", zIndex: "9999" }} >
+                                                                <FaEdit onClick={() => updatedata(items)} />
+                                                                <RiDeleteBin5Fill className=' text-[25px] text-[red] ms-3' onClick={() => setmodal(true) || setmodaldata(items)} />
                                                             </div>
-                                                            <p className='mb-2 text-[30px]' style={{ fontWeight: items.AboutParagraphHeadingFontBold, fontSize: items.AboutParagraphHeadingFontSize + 'px', textAlign: items.AboutParagraphHeadingFontAlign, textDecoration: items.AboutParagraphHeadingTextDecoration, color: items.AboutParagraphHeadingFontColor, lineHeight: items.AboutParagraphHeadingLineHeight + 'px' }}>{items.AboutParagraphHeading}</p>
+                                                            <p className='mb-2' style={{ fontWeight: items.AboutParagraphHeadingFontBold, fontSize: items.AboutParagraphHeadingFontSize + 'px', textAlign: items.AboutParagraphHeadingFontAlign, textDecoration: items.AboutParagraphHeadingTextDecoration, color: items.AboutParagraphHeadingFontColor, lineHeight: items.AboutParagraphHeadingLineHeight + 'px' }}>{items.AboutParagraphHeading}</p>
                                                             {
                                                                 aboutsubparagraph.map((item, index) => {
                                                                     return (
                                                                         items.AboutParagraphHeading === item.AboutSubParagraphHeading ?
                                                                             <div className=' relative'>
-                                                                                <div className='absolute right-[0px] top-[-30px] text-[25px]' style={{ color: "black", zIndex: "9999" }} onClick={() => updatedata(items)}>
-                                                                                    <FaEdit />
+                                                                                <div className='absolute right-[0px] top-[-30px] text-[25px] flex' style={{ color: "black", zIndex: "9999" }} >
+                                                                                    <FaEdit onClick={() => updatedata(item)} />
+                                                                                    <RiDeleteBin5Fill className=' text-[25px] text-[red] ms-3' onClick={() => setmodal(true) || setmodaldata(item)} />
                                                                                 </div>
                                                                                 <p className='mt-[20px]' style={{ fontWeight: item.AboutParagraphSubHeadingFontBold, fontSize: item.AboutParagraphSubHeadingFontSize + 'px', textAlign: item.AboutParagraphSubHeadingFontAlign, textDecoration: item.AboutParagraphSubHeadingTextDecoration, color: item.AboutParagraphSubHeadingFontColor, lineHeight: item.AboutParagraphSubHeadingLineHeight + 'px' }}>{item.AboutParagraphSubHeading}</p>
                                                                             </div>
@@ -143,12 +224,13 @@ export function AboutLayout() {
                                     }
                                     else {
                                         return (
-                                            <section className='w-[95%] m-auto  py-3'>
+                                            <section className='w-[95%] m-auto  py-3 mt-3'>
                                                 {
                                                     index % 2 === 0 ?
                                                         <section className=' w-[100%] h-[100%] rounded-[15px] flex justify-between items-center p-5 relative'>
-                                                            <div className='absolute right-[0px] top-[-30px] text-[25px]' style={{ color: "black", zIndex: "9999" }} onClick={() => updatedata(items)}>
-                                                                <FaEdit />
+                                                            <div className='absolute right-[0px] top-[0px] text-[25px] flex' style={{ color: "black", zIndex: "9999" }} >
+                                                                <FaEdit onClick={() => updatedata(items)} />
+                                                                <RiDeleteBin5Fill className=' text-[25px] text-[red] ms-3' onClick={() => setmodal(true) || setmodaldata(items)} />
                                                             </div>
                                                             <section className=' w-[400px] h-[400px] rounded-[15px] overflow-hidden flex justify-center items-center'>
                                                                 <img src={imgurl + items.AboutParagraphBanner} alt="" className='w-[100%] h-[100%]' />
@@ -160,7 +242,13 @@ export function AboutLayout() {
                                                                     aboutsubparagraph.map((item, index) => {
                                                                         return (
                                                                             items.AboutParagraphHeading === item.AboutSubParagraphHeading ?
-                                                                                <p className='mt-[20px]'>{item.AboutParagraphSubHeading}</p>
+                                                                                <div className=' relative'>
+                                                                                    <div className='absolute right-[0px] top-[-30px] text-[25px] flex' style={{ color: "black", zIndex: "9999" }} >
+                                                                                        <FaEdit onClick={() => updatedata(item)} />
+                                                                                        <RiDeleteBin5Fill className=' text-[25px] text-[red] ms-3' onClick={() => setmodal(true) || setmodaldata(item)} />
+                                                                                    </div>
+                                                                                    <p className='mt-[20px]' style={{ fontWeight: item.AboutParagraphSubHeadingFontBold, fontSize: item.AboutParagraphSubHeadingFontSize + 'px', textAlign: item.AboutParagraphSubHeadingFontAlign, textDecoration: item.AboutParagraphSubHeadingTextDecoration, color: item.AboutParagraphSubHeadingFontColor, lineHeight: item.AboutParagraphSubHeadingLineHeight + 'px' }}>{item.AboutParagraphSubHeading}</p>
+                                                                                </div>
                                                                                 :
                                                                                 null
 
@@ -171,21 +259,27 @@ export function AboutLayout() {
                                                         </section> :
 
                                                         <section className=' w-[100%] h-[100%] rounded-[15px] flex justify-between items-center flex-row-reverse p-5 relative'>
-                                                            <div className='absolute right-[0px] top-[0px] text-[25px]' style={{ color: "black", zIndex: "9999" }} onClick={() => updatedata(items)}>
-                                                                <FaEdit />
+                                                            <div className='absolute right-[0px] top-[0px] text-[25px] flex' style={{ color: "black", zIndex: "9999" }} >
+                                                                <FaEdit onClick={() => updatedata(items)} />
+                                                                <RiDeleteBin5Fill className=' text-[25px] text-[red] ms-3' onClick={() => setmodal(true) || setmodaldata(items)} />
                                                             </div>
-
                                                             <section className=' w-[400px] h-[400px] rounded-[15px] overflow-hidden flex justify-center items-center'>
                                                                 <img src={imgurl + items.AboutParagraphBanner} alt="" className='w-[100%] h-[100%]' />
                                                             </section>
 
                                                             <section className='w-[calc(100%-450px)]'>
-                                                                <p className='mb-2 text-[30px] font-[600]'  style={{ fontWeight: items.AboutParagraphHeadingFontBold, fontSize: items.AboutParagraphHeadingFontSize + 'px', textAlign: items.AboutParagraphHeadingFontAlign, textDecoration: items.AboutParagraphHeadingTextDecoration, color: items.AboutParagraphHeadingFontColor, lineHeight: items.AboutParagraphHeadingLineHeight + 'px' }}>{items.AboutParagraphHeading}</p>
+                                                                <p className='mb-2 text-[30px] font-[600]' style={{ fontWeight: items.AboutParagraphHeadingFontBold, fontSize: items.AboutParagraphHeadingFontSize + 'px', textAlign: items.AboutParagraphHeadingFontAlign, textDecoration: items.AboutParagraphHeadingTextDecoration, color: items.AboutParagraphHeadingFontColor, lineHeight: items.AboutParagraphHeadingLineHeight + 'px' }}>{items.AboutParagraphHeading}</p>
                                                                 {
                                                                     aboutsubparagraph.map((item, index) => {
                                                                         return (
                                                                             items.AboutParagraphHeading === item.AboutSubParagraphHeading ?
-                                                                                <p className='mt-[20px]'>{item.AboutParagraphSubHeading}</p>
+                                                                                <div className=' relative'>
+                                                                                    <div className='absolute right-[0px] top-[-30px] text-[25px] flex' style={{ color: "black", zIndex: "9999" }} >
+                                                                                        <FaEdit onClick={() => updatedata(item)} />
+                                                                                        <RiDeleteBin5Fill className=' text-[25px] text-[red] ms-3' onClick={() => setmodal(true) || setmodaldata(item)} />
+                                                                                    </div>
+                                                                                    <p className='mt-[20px]' style={{ fontWeight: item.AboutParagraphSubHeadingFontBold, fontSize: item.AboutParagraphSubHeadingFontSize + 'px', textAlign: item.AboutParagraphSubHeadingFontAlign, textDecoration: item.AboutParagraphSubHeadingTextDecoration, color: item.AboutParagraphSubHeadingFontColor, lineHeight: item.AboutParagraphSubHeadingLineHeight + 'px' }}>{item.AboutParagraphSubHeading}</p>
+                                                                                </div>
                                                                                 :
                                                                                 null
 
