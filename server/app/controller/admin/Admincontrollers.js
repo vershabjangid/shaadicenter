@@ -23,6 +23,19 @@ const AdminToken = process.env.ADMINTOKEN;
 const AdminPassword = process.env.ADMINPASSWORD;
 const AdminEmail = process.env.ADMINEMAIL;
 
+const AdminPassword1 = process.env.ADMINPASSWORD1;
+const AdminEmail1 = process.env.ADMINEMAIL1;
+
+const AdminPassword2 = process.env.ADMINPASSWORD2;
+const AdminEmail2 = process.env.ADMINEMAIL2;
+
+const AdminPassword3 = process.env.ADMINPASSWORD3;
+const AdminEmail3 = process.env.ADMINEMAIL3;
+
+
+const AdminPassword4 = process.env.ADMINPASSWORD4;
+const AdminEmail4 = process.env.ADMINEMAIL4;
+
 
 // here we create a admin login controller to authenticate admin here we generate jwt token for authenticate all api
 exports.Adminlogin = (req, res) => {
@@ -32,7 +45,7 @@ exports.Adminlogin = (req, res) => {
             Password: req.body.Password
         }
 
-        if (data.Email == AdminEmail && data.Password == AdminPassword && data.Email.includes('@') && data.Email.includes('.')) {
+        if (data.Email == AdminEmail && data.Password == AdminPassword && data.Email.includes('@') && data.Email.includes('.') || data.Email == AdminEmail1 && data.Password == AdminPassword1 && data.Email.includes('@') && data.Email.includes('.') || data.Email == AdminEmail2 && data.Password == AdminPassword2 && data.Email.includes('@') && data.Email.includes('.') || data.Email == AdminEmail3 && data.Password == AdminPassword3 && data.Email.includes('@') && data.Email.includes('.') || data.Email == AdminEmail4 && data.Password == AdminPassword4 && data.Email.includes('@') && data.Email.includes('.')) {
             let newtoken;
             jwt.sign({ newtoken }, AdminToken, { expiresIn: '1h' }, (err, value) => {
                 if (err) {
@@ -110,7 +123,7 @@ exports.viewadminusers = async (req, res) => {
             professionaldata,
             residentialdata,
             familydata,
-            imgurl: "http://api.shaadicenter.org/uploads/",
+            imgurl: "https://api.shaadicenter.org/uploads/",
         })
     }
     catch (error) {
@@ -179,7 +192,7 @@ exports.viewadminuserprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "http://api.shaadicenter.org/uploads/",
+                imgurl: "https://api.shaadicenter.org/uploads/",
             })
         }
     }

@@ -65,7 +65,7 @@ exports.addaboutbannercontroller = async (req, res) => {
 
 exports.viewaboutbanner = async (req, res) => {
     let viewdata = await aboutbannermodel.find()
-    let url = "http://api.shaadicenter.org/uploads/"
+    let url = "https://api.shaadicenter.org/uploads/"
     res.send({ viewdata, url })
 }
 
@@ -231,7 +231,7 @@ exports.addaboutparagraphcontroller = async (req, res) => {
 
 exports.viewaboutparagraph = async (req, res) => {
     let viewdata = await AboutParagraphModel.find()
-    let url = "http://api.shaadicenter.org/uploads/"
+    let url = "https://api.shaadicenter.org/uploads/"
     res.send({ viewdata, url })
 }
 

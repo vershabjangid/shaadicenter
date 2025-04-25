@@ -4,7 +4,8 @@ const WebRoutes = express.Router();
 let token = process.env.REGISTERTOKEN
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
-const path = require('path')
+const path = require('path');
+const { viewusers } = require('../../controller/admin/SearchController');
 
 
 
@@ -91,6 +92,6 @@ WebRoutes.put('/update-about-professional', userAuth, verifytoken, updateaboutpr
 WebRoutes.put('/update-about-residential', userAuth, verifytoken, updateaboutcontact)
 WebRoutes.put('/update-about-family', userAuth, verifytoken, updateaboutfamilydetails)
 
-
+WebRoutes.get('/search-users', userAuth, verifytoken, viewusers)
 
 module.exports = WebRoutes

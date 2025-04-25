@@ -49,6 +49,7 @@ import { AboutLayout } from './pages/dashboard/main/About Components/AboutLayout
 import { DashUpdateAboutBanner } from './pages/dashboard/main/About Components/DashUpdateAboutBanner';
 import { DashUpdateAboutParagraph } from './pages/dashboard/main/About Components/DashUpdateAboutParagraph';
 import { DashUpdateSubParagraph } from './pages/dashboard/main/About Components/DashUpdateSubParagraph';
+import { Search } from './pages/website/main/Search';
 
 function App() {
   return (
@@ -65,7 +66,6 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/forgot-otp/:Email' element={<ForgotOtp />} />
         <Route path='/change-password/:token' element={<ChangePassword />} />
-
         <Route path='/professional-details/:Id' element={<ProfessionalDetails />} />
         <Route path='/residential-details/:Id' element={<ResidentialDetails />} />
         <Route path='/family-details/:Id' element={<FamilyInfo />} />
@@ -76,6 +76,7 @@ function App() {
         <Route path='/update-professional' element={<UpdateProfessional />} />
         <Route path='/update-contact' element={<UpdateContact />} />
         <Route path='/update-family' element={<UpdateFamily />} />
+        <Route path='/search' element={<Search />} />
 
 
         <Route path='/dash-login' element={<DashLogin />} />

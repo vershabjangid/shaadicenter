@@ -24,6 +24,10 @@ let createprofileschema = mongoose.Schema({
         type: String,
         required: true
     },
+    Age: {
+        type: String,
+        required: true
+    },
     Height: {
         type: String,
         required: true

@@ -249,6 +249,7 @@ exports.createprofile = async (req, res) => {
                         Full_Name: req.body.Full_Name,
                         Gender: req.body.Gender,
                         Date_Of_Birth: req.body.Date_Of_Birth,
+                        Age: age,
                         Height: req.body.Height,
                         Religion: req.body.Religion,
                         Mother_Tongue: req.body.Mother_Tongue,
@@ -293,7 +294,7 @@ exports.createprofile = async (req, res) => {
                 else {
                     res.send({
                         Status: 0,
-                        Message: "Minimum age 18 required"
+                        Message: "Invalid Age"
                     })
                     fs.unlinkSync(`${finalpath}/${req.files[0].filename}`)
                 }
@@ -681,7 +682,7 @@ exports.viewuserprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "http://api.shaadicenter.org/uploads/",
+                imgurl: "https://api.shaadicenter.org/uploads/",
             })
         }
     }
@@ -740,7 +741,7 @@ exports.updateprofilephoto = async (req, res) => {
         _id: req.body._id,
         Profile_Picture: req.files[0].filename
     }
-    
+
     if (req.files === undefined || req.files[0] === null) {
         res.send({
             Status: 0,
@@ -1063,7 +1064,7 @@ exports.headerdata = async (req, res) => {
                 Full_Name: profiledata.Full_Name,
                 UserName: viewregister.UserName,
                 Profile_Picture: profiledata.Profile_Picture,
-                _imgurl: "http://api.shaadicenter.org/uploads/"
+                _imgurl: "https://api.shaadicenter.org/uploads/"
             })
         }
     }
