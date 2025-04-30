@@ -4,9 +4,15 @@ let mongoose = require('mongoose');
 let createprofileschema = mongoose.Schema({
 
     Sub_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        unique: true,
+        ref: 'register'
+    },
+    UserName: {
         type: String,
         required: true,
-        unique: true
+        unqiue: true
     },
     Profile_For: {
         type: String,
@@ -84,5 +90,5 @@ let createprofileschema = mongoose.Schema({
 
 
 
-let createprofilemodel = mongoose.model('profile_create', createprofileschema);
+let createprofilemodel = mongoose.model('profilecreate', createprofileschema);
 module.exports = createprofilemodel;

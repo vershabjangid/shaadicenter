@@ -2,9 +2,10 @@ let mongoose = require('mongoose')
 
 let familyinfoschema = mongoose.Schema({
     Sub_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        unqiue: true
+        unqiue: true,
+        ref: 'register'
     },
     Family_Values: {
         type: String,

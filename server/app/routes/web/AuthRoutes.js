@@ -5,7 +5,7 @@ let token = process.env.REGISTERTOKEN
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const path = require('path');
-const { viewusers } = require('../../controller/admin/SearchController');
+const { viewusers, SearchSortController, viewsearchprofile, senderandreceiverusername, sendintrestcontroller } = require('../../controller/admin/SearchController');
 
 
 
@@ -93,5 +93,9 @@ WebRoutes.put('/update-about-residential', userAuth, verifytoken, updateaboutcon
 WebRoutes.put('/update-about-family', userAuth, verifytoken, updateaboutfamilydetails)
 
 WebRoutes.get('/search-users', userAuth, verifytoken, viewusers)
+WebRoutes.post('/sort-search-users', userAuth, verifytoken, upload, SearchSortController)
+WebRoutes.post('/search-user-profile', userAuth, verifytoken, upload, viewsearchprofile)
+WebRoutes.post('/get-username', userAuth, verifytoken, upload, senderandreceiverusername)
+WebRoutes.post('/send-interest', userAuth, verifytoken, upload, sendintrestcontroller)
 
 module.exports = WebRoutes

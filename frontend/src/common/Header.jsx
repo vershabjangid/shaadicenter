@@ -34,6 +34,7 @@ export function Header() {
             })
                 .then((res) => {
                     setdata(res.data)
+                    console.log(res.data)
                 })
                 .catch((error) => {
                     console.log(error)
@@ -146,7 +147,7 @@ export function Header() {
 
                                     <section className='w-[calc(100%-60px)]'>
                                         <p className='font-[700] text-[20px] ms-3'>{data.Full_Name ? data.Full_Name : "No data Found"}</p>
-                                        <p className='text-[14px] text-[grey] ms-3'>{data.UserName ? data.Full_Name : "No data Found"}</p>
+                                        <p className='text-[14px] text-[grey] ms-3'>{data.UserName ? data.UserName : "No data Found"}</p>
                                     </section>
                                 </section>
 

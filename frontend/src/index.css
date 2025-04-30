@@ -113,6 +113,11 @@ code {
 }
 
 
-.hide_scroll::-webkit-scrollbar{
-display: none;
+.hide_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+
+.profileshadow {
+  box-shadow: 0px 0px 10px #ff869a, inset -0px -0px 3px #ff869a;
 }

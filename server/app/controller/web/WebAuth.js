@@ -72,7 +72,6 @@ exports.registercontroller = async (req, res) => {
             if (req.body.Password.includes('@') || req.body.Password.includes('#') || req.body.Password.includes('!') || req.body.Password.includes('$') || req.body.Password.includes('%') || req.body.Password.includes('^') || req.body.Password.includes('&') || req.body.Password.includes('*') || req.body.Password.includes('(') || req.body.Password.includes(')') || req.body.Password.includes('-') || req.body.Password.includes('+') || req.body.Password.includes('=') || req.body.Password.includes('_') || req.body.Password.includes('|') || req.body.Password.includes(']') || req.body.Password.includes('[') || req.body.Password.includes('{') || req.body.Password.includes('}') || req.body.Password.includes(',') || req.body.Password.includes('.') || req.body.Password.includes('>') || req.body.Password.includes('<') || req.body.Password.includes('`') || req.body.Password.includes('~')) {
 
                 let data = {
-                    UserName: 'SHADICENTER' + Math.floor(1000000000 + Math.random() * 1000000000),
                     Email: req.body.Email,
                     Password: req.body.Password,
                     Phone_No: req.body.Phone_No,
@@ -245,6 +244,7 @@ exports.createprofile = async (req, res) => {
                 if (age >= 21 && req.body.Gender === "Male" || age >= 18 && req.body.Gender === "Female") {
                     let data = {
                         Sub_id: req.body.Sub_id,
+                        UserName: 'SHADICENTER' + Math.floor(1000000000 + Math.random() * 1000000000),
                         Profile_For: req.body.Profile_For,
                         Full_Name: req.body.Full_Name,
                         Gender: req.body.Gender,
@@ -682,7 +682,7 @@ exports.viewuserprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "https://api.shaadicenter.org/uploads/",
+                imgurl: "http://localhost:5000/uploads/",
             })
         }
     }
@@ -1064,7 +1064,8 @@ exports.headerdata = async (req, res) => {
                 Full_Name: profiledata.Full_Name,
                 UserName: viewregister.UserName,
                 Profile_Picture: profiledata.Profile_Picture,
-                _imgurl: "https://api.shaadicenter.org/uploads/"
+                UserName: profiledata.UserName,
+                _imgurl: "http://localhost:5000/uploads/"
             })
         }
     }

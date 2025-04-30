@@ -2,9 +2,10 @@ let mongoose = require('mongoose');
 
 let residentialschema = mongoose.Schema({
     Sub_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        unique: true
+        unique: true,
+        ref: 'register'
     },
     Country: {
         type: String,

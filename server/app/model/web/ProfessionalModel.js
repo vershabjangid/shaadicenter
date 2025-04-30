@@ -2,9 +2,10 @@ let mongoose = require('mongoose');
 
 let professionalschema = mongoose.Schema({
     Sub_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        unique: true
+        unique: true,
+        ref: 'register'
     },
     Highest_Education: {
         type: String,
@@ -40,5 +41,5 @@ let professionalschema = mongoose.Schema({
 }, { timestamps: true })
 
 
-let professionalmodel = mongoose.model('professionaldetail', professionalschema);
+let professionalmodel = mongoose.model('ProfessionalModel', professionalschema);
 module.exports = professionalmodel

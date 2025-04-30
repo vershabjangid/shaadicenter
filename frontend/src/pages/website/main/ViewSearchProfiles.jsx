@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Loader } from '../../../common/Loader'
-import { Header } from '../../../common/Header'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Footer } from '../../../common/Footer';
+import { Header } from '../../../common/Header';
+import { Loader } from '../../../common/Loader';
+import { api, getCookie } from '../../../url/Url';
 import image from '../../../images/Gemini_Generated_Image_bnoy1ebnoy1ebnoy1.png'
-import { api, getCookie } from '../../../url/Url'
-import { Link, useNavigate } from 'react-router-dom'
-import { FaCheck, FaEdit } from 'react-icons/fa'
-import { FaXmark } from 'react-icons/fa6'
-import { Footer } from '../../../common/Footer'
-export function ViewProfile() {
+import { FaCheck, FaEnvelope, FaGraduationCap, FaHeart, FaOm } from 'react-icons/fa';
+import { FaCakeCandles, FaLocationPin, FaXmark } from 'react-icons/fa6';
+import { HiUserGroup } from 'react-icons/hi';
+
+export function ViewSearchProfiles() {
+    let {Sub_id} = useParams();
     let [loader, setloader] = useState(false)
     let navigate = useNavigate();
 
@@ -20,7 +23,7 @@ export function ViewProfile() {
     let userdata = () => {
         setloader(true)
         try {
-            api.post('/user-data', { _id: getCookie('User_Id') }, {
+            api.post('/search-user-profile', { UserName: Sub_id }, {
                 headers: {
                     Authorization: getCookie('Registertoken')
                 }
@@ -51,32 +54,6 @@ export function ViewProfile() {
     }, [])
 
 
-
-    let updatebasic = (value) => {
-        navigate('/update-basic', { state: value })
-    }
-
-
-
-    let updateprofessional = (value) => {
-        navigate('/update-professional', { state: value })
-    }
-
-
-    let updatecontact = (value) => {
-        navigate('/update-contact', { state: value })
-    }
-
-
-    let updatefamily = (value) => {
-        navigate('/update-family', { state: value })
-    }
-
-
-    let changeprofilepicture = (value) => {
-        navigate('/update-profile-picture', { state: value })
-    }
-
     return (
         <>
             {
@@ -85,14 +62,15 @@ export function ViewProfile() {
                         <Header />
 
                         <section className='w-[100%] h-[85px] border-[1px] bg-[red]'></section>
-                        <section className='w-[100%] py-[40px]  bg-[#ffffff]'>
+                        <section className='w-[100%] py-[40px]  bg-[#fff1fd]'>
                             <section className='w-[80%] p-3 py-[20px] m-auto rounded-[20px]'>
-                                {/* <h1 className='text-[23px]'>View Profile</h1> */}
+                                <section className='profileshadow bg-[#ffffff] p-4 rounded-[10px] mb-4'>
+                                    <h1 className='text-[23px] font-[600]'>View Profile</h1>
+                                </section>
 
-                                <section className='bg-[#d9d7d7a3] p-4 rounded-[10px]'>
-                                    <div className='flex justify-end'>
-                                        <FaEdit className='text-[20px] cursor-pointer' onClick={() => changeprofilepicture(registerdata)} />
-                                    </div>
+
+                                <section className='profileshadow bg-[#ffffff] p-4 rounded-[10px]'>
+
                                     <section className='w-[100%] my-[20px] flex justify-between '>
                                         <section className='w-[300px] h-[300px] m-auto border-[1px] rounded-[10px] overflow-hidden'>
                                             <img src={profiledata === null || profiledata === undefined || profiledata.Profile_Picture === undefined ? image : `${imgurl}/${profiledata.Profile_Picture}`} alt="" className='w-[100%] h-[100%]' />
@@ -101,13 +79,15 @@ export function ViewProfile() {
                                             <div>
                                                 <p className='font-[800] text-[25px] uppercase'>{profiledata === null || profiledata === undefined || profiledata.Full_Name === undefined ? "N/A" : profiledata.Full_Name}</p>
                                                 <p className=' text-[16px] font-[600]'>{profiledata === null || profiledata === undefined || profiledata.UserName === undefined ? "N/A" : profiledata.UserName}</p>
-                                                <p className=' text-[16px] mt-[10px]'>{profiledata === null || profiledata === undefined || profiledata.Profile_For === undefined ? "N/A" : "Created For" + " " + profiledata.Profile_For}</p>
-                                                <p className=' text-[16px] mt-[5px]'>{profiledata === null || profiledata === undefined || profiledata.Gender === undefined ? "N/A" : profiledata.Gender}</p>
-                                                <p className=' text-[16px] mt-[5px]'>{profiledata === null || profiledata === undefined || profiledata.Date_Of_Birth === undefined ? "N/A" : profiledata.Date_Of_Birth}</p>
-                                                <p className=' text-[16px] mt-[5px]'>{profiledata === null || profiledata === undefined || profiledata.Caste === undefined ? "N/A" : profiledata.Caste}</p>
-                                                <p className=' text-[16px] mt-[5px]'>{professionaldata === null || professionaldata === undefined || professionaldata.Highest_Education === undefined ? "N/A" : professionaldata.Highest_Education}</p>
-                                                <p className=' text-[16px] mt-[5px]'>{residentialdata === null || residentialdata === undefined || residentialdata.Country === undefined ? "N/A" : residentialdata.Country} / {residentialdata === null || residentialdata === undefined || residentialdata.State === undefined ? "N/A" : residentialdata.State} /  {residentialdata === null || residentialdata === undefined || residentialdata.District === undefined ? "N/A" : residentialdata.District}</p>
-                                                <p className=' text-[16px] mt-[5px] flex items-center' >{profiledata === null || profiledata === undefined || registerdata.Phone_No === undefined ? "N/A" : registerdata.Phone_No} /&nbsp; {profiledata === null || profiledata === undefined || registerdata.Is_verified === undefined ? "N/A" : (registerdata.Is_verified === true ? <span className='text-green-500 flex items-center'><FaCheck />&nbsp; Verified </span> : <span className='text-red-500 flex items-center'><FaXmark />&nbsp; Not Verified </span>)}</p>
+                                                <p className='text-[15px] font-[600] my-2 flex items-center'><div className='me-1 p-1 rounded-[5px] text-white bg-[pink]'><FaCakeCandles /></div> <span className='font-[500] text-[14px]'>{profiledata === null || profiledata === undefined || profiledata.Date_Of_Birth === undefined ? "N/A" : profiledata.Date_Of_Birth}</span></p>
+                                                <p className='text-[15px] font-[600] my-2 flex items-center'><div className='me-1 p-1 rounded-[5px] text-white bg-[pink]'><FaOm /></div> <span className='font-[500] text-[14px]'>{profiledata === null || profiledata === undefined || profiledata.Religion === undefined ? "N/A" : profiledata.Religion}</span></p>
+                                                <p className='text-[15px] font-[600] my-2 flex items-center'><div className='me-1 p-1 rounded-[5px] text-white bg-[pink]'><HiUserGroup /></div> <span className='font-[500] text-[14px]'>{profiledata === null || profiledata === undefined || profiledata.Caste === undefined ? "N/A" : profiledata.Caste}</span></p>
+                                                <p className='text-[15px] font-[600] my-2 flex items-center'><div className='me-1 p-1 rounded-[5px] text-white bg-[pink]'><FaGraduationCap /></div> <span className='font-[500] text-[14px]'>{professionaldata === null || professionaldata === undefined || professionaldata.Highest_Education === undefined ? "N/A" : professionaldata.Highest_Education}</span></p>
+                                                <p className='text-[15px] font-[600] my-2 flex items-center'><div className='me-1 p-1 rounded-[5px] text-white bg-[pink]'><FaLocationPin /></div> <span className='font-[500] text-[14px]'>{residentialdata === null || residentialdata === undefined || residentialdata.Country === undefined ? "N/A" : residentialdata.Country} / {residentialdata === null || residentialdata === undefined || residentialdata.State === undefined ? "N/A" : residentialdata.State} /  {residentialdata === null || residentialdata === undefined || residentialdata.District === undefined ? "N/A" : residentialdata.District}</span></p>
+                                            </div>
+                                            <div className='mt-[30px] flex'>
+                                                <Link className='profileshadow flex items-center text-[#ff869a] py-3 px-4 rounded-[10px]'><FaEnvelope className='me-2' /> Send Message</Link>
+                                                <Link to={`/send-intrest/${Sub_id}`} className='profileshadow flex items-center text-[#ff869a] py-3 px-4 rounded-[10px] ms-5'><FaHeart className='me-2' />Send Interest</Link>
                                             </div>
                                         </section>
                                     </section>
@@ -115,13 +95,8 @@ export function ViewProfile() {
                                 </section>
 
 
-                                <section className='w-[100%] my-[20px]  bg-[#d9d7d7a3] py-4 rounded-[10px] px-5'>
-                                    <div className=' w-[100%] flex justify-end'>
-                                        <Link to={`/update-myself/${profiledata === null || profiledata === undefined || profiledata.About_Myself === undefined ? null : profiledata._id}/${profiledata === null || profiledata === undefined || profiledata.About_Myself === undefined ? null : profiledata.About_Myself}`}>
-                                            <FaEdit className='text-[20px] cursor-pointer' />
-                                        </Link>
+                                <section className='profileshadow w-[100%] my-[20px]  bg-[#ffffff] py-4 rounded-[10px] px-5'>
 
-                                    </div>
                                     <section className='w-[100%] h-[100%]'>
                                         <div>
                                             <p className='font-[800] text-[25px]'>About Myself</p>
@@ -130,12 +105,10 @@ export function ViewProfile() {
                                     </section>
                                 </section>
 
-                                <section className='w-[100%] my-[20px] flex justify-between bg-[#d9d7d7a3] py-4 rounded-[10px] px-5'>
+                                <section className='profileshadow w-[100%] my-[20px] flex justify-between bg-[#ffffff] py-4 rounded-[10px] px-5'>
                                     <section className='w-[100%] h-[100%]'>
                                         <div>
-                                            <div className=' w-[100%] flex justify-end'>
-                                                <FaEdit className='text-[20px] cursor-pointer' onClick={() => updatebasic(profiledata)} />
-                                            </div>
+
                                             <p className='font-[800] text-[25px]'>Basic Details</p>
 
                                             <div className='w-[100%] mt-[10px] flex'>
@@ -143,16 +116,10 @@ export function ViewProfile() {
                                                 <div className='w-[50%]'>
                                                     <ul>
                                                         <li className='font-[600] my-2'>
-                                                            Created For : <span className='font-[400] text-[grey]'>{profiledata === null || profiledata === undefined || profiledata.Profile_For === undefined ? "N/A" : profiledata.Profile_For}</span>
-                                                        </li>
-                                                        <li className='font-[600] my-2'>
                                                             Username : <span className='font-[400] text-[grey]'>{profiledata === null || profiledata === undefined || profiledata.UserName === undefined ? "N/A" : profiledata.UserName}</span>
                                                         </li>
                                                         <li className='font-[600] my-2'>
                                                             Date of birth : <span className='font-[400] text-[grey]'>{profiledata === null || profiledata === undefined || profiledata.Date_Of_Birth === undefined ? "N/A" : profiledata.Date_Of_Birth}</span>
-                                                        </li>
-                                                        <li className='font-[600] my-2'>
-                                                            Phone.No : <span className='font-[400] text-[grey]'>{registerdata === null || registerdata === undefined || registerdata.Phone_No === undefined ? "N/A" : registerdata.Phone_No}</span>
                                                         </li>
 
                                                         <li className='font-[600] my-2'>
@@ -170,6 +137,9 @@ export function ViewProfile() {
                                                             Drinking Habits : <span className='font-[400] text-[grey]'>{profiledata === null || profiledata === undefined || profiledata.Drinking_Habits === undefined ? "N/A" : profiledata.Drinking_Habits}</span>
                                                         </li>
 
+                                                        <li className='font-[600] my-2'>
+                                                            Smoking Habits : <span className='font-[400] text-[grey]'>{profiledata === null || profiledata === undefined || profiledata.Smoking_Habits === undefined ? "N/A" : profiledata.Smoking_Habits}</span>
+                                                        </li>
                                                     </ul>
                                                 </div>
 
@@ -183,9 +153,7 @@ export function ViewProfile() {
                                                             Marital Status : <span className='font-[400] text-[grey]'>{profiledata === null || profiledata === undefined || profiledata.Marital_Status === undefined ? "N/A" : profiledata.Marital_Status}</span>
                                                         </li>
 
-                                                        <li className='font-[600] my-2'>
-                                                            Email : <span className='font-[400] text-[grey]'>{registerdata === null || registerdata === undefined || registerdata.Email === undefined ? "N/A" : registerdata.Email}</span>
-                                                        </li>
+
 
 
                                                         <li className='font-[600] my-2'>
@@ -205,9 +173,6 @@ export function ViewProfile() {
                                                         </li>
 
 
-                                                        <li className='font-[600] my-2'>
-                                                            Smoking Habits : <span className='font-[400] text-[grey]'>{profiledata === null || profiledata === undefined || profiledata.Smoking_Habits === undefined ? "N/A" : profiledata.Smoking_Habits}</span>
-                                                        </li>
 
 
                                                     </ul>
@@ -219,12 +184,10 @@ export function ViewProfile() {
 
 
 
-                                <section className='w-[100%] my-[20px] flex justify-between bg-[#d9d7d7a3] py-4 rounded-[10px] px-5'>
+                                <section className='profileshadow w-[100%] my-[20px] flex justify-between bg-[#ffffff] py-4 rounded-[10px] px-5'>
                                     <section className='w-[100%] h-[100%]'>
                                         <div>
-                                            <div className=' w-[100%] flex justify-end'>
-                                                <FaEdit className='text-[20px]' onClick={() => updateprofessional(professionaldata)} />
-                                            </div>
+
                                             <p className='font-[800] text-[25px]'>Professional Details</p>
 
                                             <div className='w-[100%] mt-[10px] flex'>
@@ -273,12 +236,10 @@ export function ViewProfile() {
                                 </section>
 
 
-                                <section className='w-[100%] my-[20px] flex justify-between bg-[#d9d7d7a3] py-4 rounded-[10px] px-5'>
+                                <section className='profileshadow w-[100%] my-[20px] flex justify-between bg-[#ffffff] py-4 rounded-[10px] px-5'>
                                     <section className='w-[100%] h-[100%]'>
                                         <div>
-                                            <div className=' w-[100%] flex justify-end'>
-                                                <FaEdit className='text-[20px]' onClick={() => updatecontact(residentialdata)} />
-                                            </div>
+
                                             <p className='font-[800] text-[25px]'>Contact Details</p>
 
                                             <div className='w-[100%] mt-[10px] flex'>
@@ -292,26 +253,20 @@ export function ViewProfile() {
                                                             State : <span className='font-[400] text-[grey]'>{residentialdata === null || residentialdata === undefined || residentialdata.State === undefined ? "N/A" : residentialdata.State}</span>
 
                                                         </li>
-                                                        <li className='font-[600] my-2'>
-                                                            District : <span className='font-[400] text-[grey]'>{residentialdata === null || residentialdata === undefined || residentialdata.District === undefined ? "N/A" : residentialdata.District}</span>
-                                                        </li>
-                                                        <li className='font-[600] my-2'>
-                                                            Address : <span className='font-[400] text-[grey]'>{residentialdata === null || residentialdata === undefined || residentialdata.Address === undefined ? "N/A" : residentialdata.Address}</span>
-                                                        </li>
+
+
                                                     </ul>
                                                 </div>
 
                                                 <div className='w-[50%]'>
                                                     <ul>
                                                         <li className='font-[600] my-2'>
-                                                            Citizenship : <span className='font-[400] text-[grey]'>{residentialdata === null || residentialdata === undefined || residentialdata.Citizenship === undefined ? "N/A" : residentialdata.Citizenship}</span>
+                                                            District : <span className='font-[400] text-[grey]'>{residentialdata === null || residentialdata === undefined || residentialdata.District === undefined ? "N/A" : residentialdata.District}</span>
                                                         </li>
 
+
                                                         <li className='font-[600] my-2'>
-                                                            Email : <span className='font-[400] text-[grey]'>{registerdata === null || registerdata === undefined || registerdata.Email === undefined ? "N/A" : registerdata.Email}</span>
-                                                        </li>
-                                                        <li className='font-[600] my-2'>
-                                                            Phone.no : <span className='font-[400] text-[grey]'>{registerdata === null || registerdata === undefined || registerdata.Phone_No === undefined ? "N/A" : registerdata.Phone_No}</span>
+                                                            Citizenship : <span className='font-[400] text-[grey]'>{residentialdata === null || residentialdata === undefined || residentialdata.Citizenship === undefined ? "N/A" : residentialdata.Citizenship}</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -323,12 +278,10 @@ export function ViewProfile() {
                                 </section>
 
 
-                                <section className='w-[100%] my-[20px] flex justify-between bg-[#d9d7d7a3] py-4 rounded-[10px] px-5'>
+                                <section className='profileshadow w-[100%] my-[20px] flex justify-between bg-[#ffffff] py-4 rounded-[10px] px-5'>
                                     <section className='w-[100%] h-[100%]'>
                                         <div>
-                                            <div className=' w-[100%] flex justify-end'>
-                                                <FaEdit className='text-[20px]' onClick={() => updatefamily(familydata)} />
-                                            </div>
+
                                             <p className='font-[800] text-[25px]'>Family Details</p>
 
                                             <div className='w-[100%] mt-[10px] flex'>
@@ -363,7 +316,7 @@ export function ViewProfile() {
                                                         </li>
 
                                                         <li className='font-[600] my-2'>
-                                                            No Of Children : <span className='font-[400] text-[grey]'>{familydata === null || familydata === undefined || familydata.No_Of_Children === undefined ? "N/A" : familydata.No_Of_Children}</span>
+                                                            No of Children : <span className='font-[400] text-[grey]'>{familydata === null || familydata === undefined || familydata.No_Of_Children === undefined ? "N/A" : familydata.No_Of_Children}</span>
                                                         </li>
 
                                                         <li className='font-[600] my-2'>

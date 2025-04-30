@@ -2,12 +2,6 @@ const mongoose = require('mongoose');
 
 
 const registerschema = mongoose.Schema({
-
-    UserName: {
-        type: String,
-        required: true,
-        unqiue: true
-    },
     Email: {
         type: String,
         required: true,
@@ -46,5 +40,5 @@ const registerschema = mongoose.Schema({
 }, { timestamps: true })
 
 
-const registersmodel = mongoose.model('register', registerschema);
+const registersmodel = mongoose.model('Register', registerschema);
 module.exports = registersmodel;

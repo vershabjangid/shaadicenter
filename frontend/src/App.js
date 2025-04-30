@@ -50,6 +50,8 @@ import { DashUpdateAboutBanner } from './pages/dashboard/main/About Components/D
 import { DashUpdateAboutParagraph } from './pages/dashboard/main/About Components/DashUpdateAboutParagraph';
 import { DashUpdateSubParagraph } from './pages/dashboard/main/About Components/DashUpdateSubParagraph';
 import { Search } from './pages/website/main/Search';
+import { ViewSearchProfiles } from './pages/website/main/ViewSearchProfiles';
+import { SendIntrest } from './pages/website/main/SendIntrest';
 
 function App() {
   return (
@@ -77,6 +79,8 @@ function App() {
         <Route path='/update-contact' element={<UpdateContact />} />
         <Route path='/update-family' element={<UpdateFamily />} />
         <Route path='/search' element={<Search />} />
+        <Route path='/profile/:Sub_id' element={<ViewSearchProfiles />} />
+        <Route path='/send-intrest/:Receiver_id' element={<SendIntrest />} />
 
 
         <Route path='/dash-login' element={<DashLogin />} />

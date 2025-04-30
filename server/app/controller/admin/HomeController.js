@@ -79,7 +79,7 @@ exports.addhomebannercontroller = async (req, res) => {
 
 exports.viewhomebanner = async (req, res) => {
     let viewdata = await homebannermodel.find()
-    let url = "https://api.shaadicenter.org/uploads/"
+    let url = "http://localhost:5000/uploads/"
     res.send({ viewdata, url })
 }
 
