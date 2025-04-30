@@ -52,6 +52,8 @@ import { DashUpdateSubParagraph } from './pages/dashboard/main/About Components/
 import { Search } from './pages/website/main/Search';
 import { ViewSearchProfiles } from './pages/website/main/ViewSearchProfiles';
 import { SendIntrest } from './pages/website/main/SendIntrest';
+import { SuccessfullyIntrest } from './pages/website/main/SuccessfullyIntrest';
+import { ViewInterests } from './pages/website/main/ViewInterests';
 
 function App() {
   return (
@@ -81,6 +83,8 @@ function App() {
         <Route path='/search' element={<Search />} />
         <Route path='/profile/:Sub_id' element={<ViewSearchProfiles />} />
         <Route path='/send-intrest/:Receiver_id' element={<SendIntrest />} />
+        <Route path='/success-send-intrest' element={<SuccessfullyIntrest />} />
+        <Route path='/interests/:UserName' element={<ViewInterests />} />
 
 
         <Route path='/dash-login' element={<DashLogin />} />

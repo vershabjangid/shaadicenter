@@ -29,7 +29,6 @@ const transporter = nodemailer.createTransport({
 
 // async..await is not allowed in global scope, must use a wrapper
 async function main(value) {
-    console.log(value)
     // send mail with defined transport object
     const info = await transporter.sendMail({
         from: `${process.env.EMAIL}`, // sender address
@@ -38,7 +37,7 @@ async function main(value) {
         html: `
         Subject: Your One-Time Password (OTP) for Secure Access <br/><br/>
 
-Dear ${value.Full_Name},<br/><br/>
+Dear User,<br/><br/>
 
 Your one-time password (OTP) is: ${value.OTP_Value}<br/>
 
@@ -682,7 +681,7 @@ exports.viewuserprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "http://localhost:5000/uploads/",
+                imgurl: "https://api.shaadicenter.org/uploads/",
             })
         }
     }
@@ -1065,7 +1064,7 @@ exports.headerdata = async (req, res) => {
                 UserName: viewregister.UserName,
                 Profile_Picture: profiledata.Profile_Picture,
                 UserName: profiledata.UserName,
-                _imgurl: "http://localhost:5000/uploads/"
+                _imgurl: "https://api.shaadicenter.org/uploads/"
             })
         }
     }

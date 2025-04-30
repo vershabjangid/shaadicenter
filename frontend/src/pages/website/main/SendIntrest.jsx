@@ -3,7 +3,7 @@ import { Footer } from '../../../common/Footer'
 import { Loader } from '../../../common/Loader'
 import { Header } from '../../../common/Header'
 import { FaHeart } from 'react-icons/fa'
-import { data, useParams } from 'react-router-dom'
+import { data, useNavigate, useParams } from 'react-router-dom'
 import { api, getCookie } from '../../../url/Url'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -13,7 +13,6 @@ export function SendIntrest() {
     let { Receiver_id } = useParams();
 
     let [finaluserdata, setdata] = useState([])
-    // console.log(data)
     let getdata = () => {
         try {
             let data = {
@@ -44,11 +43,11 @@ export function SendIntrest() {
 
     let notificationsuccess = (success) => toast.success(success)
     let notificationerror = (error) => toast.error(error)
+    let navigate = useNavigate();
     let insertdata = (value) => {
-        console.log(value)
         let finaldata = {
             SenderName: value.SenderFullUserName,
-            SenderUserName: value.SenderFullUserName,
+            SenderUserName: value.SenderUserName,
             ReceiverName: value.ReceiverFullUserName,
             ReceiverUserName: value.ReceiverUserName,
             Message: intrestdata
@@ -60,15 +59,15 @@ export function SendIntrest() {
                 headers: {
                     Authorization: getCookie('Registertoken')
                 }
+
             })
                 .then((res) => {
                     if (res.data.Status === 1) {
                         notificationsuccess(res.data.Message)
-                        console.log(finaldata)
+                        navigate('/success-send-intrest', { state: finaldata })
                     }
                     else {
                         notificationerror(res.data.Message)
-                        console.log(finaldata)
                     }
                 })
                 .catch((error) => {
@@ -90,7 +89,7 @@ export function SendIntrest() {
                         <section className='w-[100%] py-[40px]  bg-[#fff1fd]'>
                             <section className='w-[80%] p-3 py-[20px] m-auto rounded-[20px]'>
                                 <section className='profileshadow bg-[#ffffff] p-4 rounded-[10px] mb-4 '>
-                                    <h1 className='text-[23px] text-[#ff869a] font-[600] flex items-center '><FaHeart className='me-2' />Send Interest</h1>
+                                    <h1 className='text-[23px] text-[#ff869a] font-[600] flex items-center '><FaHeart className='me-2' />Send Interests</h1>
                                 </section>
 
 

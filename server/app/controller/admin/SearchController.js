@@ -13,7 +13,7 @@ exports.viewusers = async (req, res) => {
         var profiledata = await createprofilemodel.find()
         var professionaldata = await professionalmodel.find()
         var residentialdata = await residentialmodel.find()
-        let finalfetch = [[...profiledata], [...professionaldata], [...residentialdata], "http://localhost:5000/uploads/"]
+        let finalfetch = [[...profiledata], [...professionaldata], [...residentialdata], "https://api.shaadicenter.org/uploads/"]
         res.send(finalfetch)
     }
     catch (error) {
@@ -72,7 +72,6 @@ exports.viewsearchprofile = async (req, res) => {
         let data = {
             UserName: req.body.UserName || ""
         }
-        console.log(data)
         if (data.UserName === undefined || data.UserName === "") {
             res.send({
                 Status: 0,
@@ -89,7 +88,7 @@ exports.viewsearchprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "http://localhost:5000/uploads/",
+                imgurl: "https://api.shaadicenter.org/uploads/",
             })
         }
     }
@@ -150,43 +149,50 @@ exports.senderandreceiverusername = async (req, res) => {
 
 
 
-
-
 exports.sendintrestcontroller = async (req, res) => {
-    console.log(req.body)
     try {
-        let data = {
-            SenderName: req.body.SenderName,
-            SenderUserName: req.body.SenderUserName,
-            ReceiverName: req.body.ReceiverName,
-            ReceiverUserName: req.body.ReceiverUserName,
-            Message: req.body.Message,
-            Permitted: 'Pending'
+        let viewdata = await intrestmodel.find({ SenderUserName: req.body.SenderUserName, ReceiverUserName: req.body.ReceiverUserName })
+        console.log(viewdata)
+        if (viewdata === null || viewdata.length !== 0) {
+            res.send({
+                Status: 0,
+                Message: "Intrest Already Sended"
+            })
         }
+        else {
+            let data = {
+                SenderName: req.body.SenderName,
+                SenderUserName: req.body.SenderUserName,
+                ReceiverName: req.body.ReceiverName,
+                ReceiverUserName: req.body.ReceiverUserName,
+                Message: req.body.Message,
+                Permitted: 'Pending'
+            }
 
-        console.log(data)
-        let userdata = await intrestmodel(data)
-        userdata.save()
-            .then(() => {
-                res.send({
-                    Status: 1,
-                    Message: "Intrest Sended Successfully"
+            console.log(data)
+            let userdata = await intrestmodel(data)
+            userdata.save()
+                .then(() => {
+                    res.send({
+                        Status: 1,
+                        Message: "Intrest Sended Successfully"
+                    })
                 })
-            })
-            .catch((error) => {
-                if (error.code === 11000) {
-                    res.send({
-                        Status: 0,
-                        Message: "Data Already Inserted"
-                    })
-                }
-                else {
-                    res.send({
-                        Status: 0,
-                        Message: "Data Missing"
-                    })
-                }
-            })
+                .catch((error) => {
+                    if (error.code === 11000) {
+                        res.send({
+                            Status: 0,
+                            Message: "Data Already Inserted"
+                        })
+                    }
+                    else {
+                        res.send({
+                            Status: 0,
+                            Message: "Data Missing"
+                        })
+                    }
+                })
+        }
     }
 
     catch (error) {
@@ -204,3 +210,73 @@ exports.sendintrestcontroller = async (req, res) => {
         }
     }
 }
+
+
+exports.viewintrests = async (req, res) => {
+    try {
+        if (req.body.Permitted === "All") {
+            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName })
+            res.send(viewdata)
+        }
+        else if (req.body.Permitted === "Pending") {
+            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Pending" })
+            res.send(viewdata)
+        }
+
+        else if (req.body.Permitted === "Accepted") {
+            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Accepted" })
+            res.send(viewdata)
+        }
+        else if (req.body.Permitted === "Declined") {
+            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Declined" })
+            res.send(viewdata)
+        }
+
+        else if (req.body.Permitted === "AllSended") {
+            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName })
+            res.send(viewdata)
+        }
+        else if (req.body.Permitted === "PendingSended") {
+            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Pending" })
+            res.send(viewdata)
+        }
+
+        else if (req.body.Permitted === "AcceptedSended") {
+            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Accepted" })
+            res.send(viewdata)
+        }
+        else {
+            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Declined" })
+            res.send(viewdata)
+        }
+
+    }
+    catch (error) {
+        if (error.CastError) {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+        else {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+    }
+}
+
+
+// exports.updateinterests = async (req, res) => {
+//     let data = {
+//         SenderName: req.body.SenderName,
+//         SenderUserName: req.body.SenderUserName,
+//         ReceiverName: req.body.ReceiverName,
+//         ReceiverUserName: req.body.ReceiverUserName,
+//         Message: req.body.Message,
+//         Permitted: 'Pending'
+//     }
+
+//     let updatedata = await intrestmodel.updateone({ SenderUserName: data.SenderUserName, ReceiverUserName: data.ReceiverUserName },{Permitted : data.Permitted})
+// }

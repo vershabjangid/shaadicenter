@@ -87,7 +87,7 @@ export function ViewSearchProfiles() {
                                             </div>
                                             <div className='mt-[30px] flex'>
                                                 <Link className='profileshadow flex items-center text-[#ff869a] py-3 px-4 rounded-[10px]'><FaEnvelope className='me-2' /> Send Message</Link>
-                                                <Link to={`/send-intrest/${Sub_id}`} className='profileshadow flex items-center text-[#ff869a] py-3 px-4 rounded-[10px] ms-5'><FaHeart className='me-2' />Send Interest</Link>
+                                                <Link to={`/send-intrest/${Sub_id}`} className='profileshadow flex items-center text-[#ff869a] py-3 px-4 rounded-[10px] ms-5'><FaHeart className='me-2' />Send Interests</Link>
                                             </div>
                                         </section>
                                     </section>

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaBars, FaSearch, FaUserEdit } from 'react-icons/fa'
 import { FaChevronDown, FaXmark } from 'react-icons/fa6'
 import { api, getCookie } from '../url/Url'
-import { TbWorldSearch } from 'react-icons/tb'
+import { TbUserHeart, TbWorldSearch } from 'react-icons/tb'
 import { FiBell, FiHelpCircle, FiHome, FiSettings } from 'react-icons/fi'
 import { BsExclamationCircle } from 'react-icons/bs'
 import { LuClipboardCheck } from 'react-icons/lu'
@@ -168,7 +168,7 @@ export function Header() {
                                     </section>
                                 </section>
                         }
-                        <section className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
+                        <Link to={"/"} className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
                             <section className=' w-[60px] h-[60px] overflow-hidden rounded-[50%]  flex justify-center items-center'>
                                 <FiHome className='text-[30px]' />
                             </section>
@@ -176,13 +176,13 @@ export function Header() {
                             <section className='w-[calc(100%-60px)]'>
                                 <p className='text-[14px] text text-[grey] ms-3'>Home</p>
                             </section>
-                        </section>
+                        </Link>
 
 
 
 
                         {
-                            getcookie ? <section className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
+                            getcookie ? <Link to={'/search'} className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
                                 <section className=' w-[60px] h-[60px] overflow-hidden rounded-[50%]  flex justify-center items-center'>
                                     <FaSearch className='text-[30px]' />
                                 </section>
@@ -190,11 +190,11 @@ export function Header() {
                                 <section className='w-[calc(100%-60px)]'>
                                     <p className='text-[14px] text text-[grey] ms-3'>Search</p>
                                 </section>
-                            </section>
+                            </Link>
                                 : null}
 
 
-                        <section className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
+                        <Link to={"/about"} className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
                             <section className=' w-[60px] h-[60px] overflow-hidden rounded-[50%]  flex justify-center items-center'>
                                 <BsExclamationCircle className='text-[30px]' />
                             </section>
@@ -202,22 +202,22 @@ export function Header() {
                             <section className='w-[calc(100%-60px)]'>
                                 <p className='text-[14px] text text-[grey] ms-3'>About Us</p>
                             </section>
-                        </section>
+                        </Link>
 
 
                         {
                             getcookie ?
                                 <>
 
-                                    <section className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
+                                    <Link to={`/interests/${data.UserName}`} className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
                                         <section className=' w-[60px] h-[60px] overflow-hidden rounded-[50%]  flex justify-center items-center'>
-                                            <FiBell className='text-[30px]' />
+                                            <TbUserHeart className='text-[30px]' />
                                         </section>
 
                                         <section className='w-[calc(100%-60px)]'>
-                                            <p className='text-[14px] text text-[grey] text-start ms-3'>Notifications</p>
+                                            <p className='text-[14px] text text-[grey] text-start ms-3'>Interests</p>
                                         </section>
-                                    </section>
+                                    </Link>
 
                                 </>
                                 :
