@@ -477,6 +477,8 @@ exports.logincontrol = async (req, res) => {
     }
 
     let viewdata = await registersmodel.find({ Email: data.Email, Password: data.Password })
+    let UserName = await createprofilemodel.find({ Sub_id: viewdata[0]._id })
+    console.log(UserName)
     if (viewdata === null || viewdata.length === 0) {
         res.send({
             Status: 0,
@@ -539,7 +541,8 @@ exports.logincontrol = async (req, res) => {
                                 Message: "User Verified Successfully",
                                 RegisterToken: value,
                                 User_id: viewdata[0]._id,
-                                Form_Status: viewdata[0].Form_Status
+                                Form_Status: viewdata[0].Form_Status,
+                                UserName: UserName[0].UserName
                             })
                         }
                     })

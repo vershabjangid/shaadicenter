@@ -1,4 +1,4 @@
-import { FaHome, FaInfo, FaLanguage, FaOm, FaUser } from "react-icons/fa";
+import { FaHome, FaInfo, FaLanguage, FaOm, FaUser, FaWallet } from "react-icons/fa";
 import { FaBook, FaGlobe, FaPeopleGroup } from "react-icons/fa6";
 import { GrUserWorker } from "react-icons/gr";
 import { IoColorPalette } from "react-icons/io5";
@@ -59,5 +59,10 @@ export let sidebardata = [
         Name: "Themes",
         path: "/dash-themes",
         icon: <IoColorPalette />
+    },
+    {
+        Name: "Payments",
+        path: "/dash-payments",
+        icon: <FaWallet />
     },
 ]

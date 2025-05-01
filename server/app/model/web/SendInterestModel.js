@@ -2,6 +2,10 @@ let mongoose = require('mongoose');
 
 
 let intrestschema = mongoose.Schema({
+    User_id: {
+        type: String,
+        required: true
+    },
     SenderName: {
         type: String,
         required: true

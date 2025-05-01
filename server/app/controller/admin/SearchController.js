@@ -152,7 +152,6 @@ exports.senderandreceiverusername = async (req, res) => {
 exports.sendintrestcontroller = async (req, res) => {
     try {
         let viewdata = await intrestmodel.find({ SenderUserName: req.body.SenderUserName, ReceiverUserName: req.body.ReceiverUserName })
-        console.log(viewdata)
         if (viewdata === null || viewdata.length !== 0) {
             res.send({
                 Status: 0,
@@ -161,6 +160,7 @@ exports.sendintrestcontroller = async (req, res) => {
         }
         else {
             let data = {
+                User_id: req.body.User_id,
                 SenderName: req.body.SenderName,
                 SenderUserName: req.body.SenderUserName,
                 ReceiverName: req.body.ReceiverName,
@@ -215,38 +215,38 @@ exports.sendintrestcontroller = async (req, res) => {
 exports.viewintrests = async (req, res) => {
     try {
         if (req.body.Permitted === "All") {
-            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName })
+            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName }).select('-User_id').select('-User_id')
             res.send(viewdata)
         }
         else if (req.body.Permitted === "Pending") {
-            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Pending" })
+            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Pending" }).select('-User_id')
             res.send(viewdata)
         }
 
         else if (req.body.Permitted === "Accepted") {
-            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Accepted" })
+            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Accepted" }).select('-User_id')
             res.send(viewdata)
         }
         else if (req.body.Permitted === "Declined") {
-            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Declined" })
+            let viewdata = await intrestmodel.find({ ReceiverUserName: req.body.UserName, Permitted: "Declined" }).select('-User_id')
             res.send(viewdata)
         }
 
         else if (req.body.Permitted === "AllSended") {
-            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName })
+            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName }).select('-User_id')
             res.send(viewdata)
         }
         else if (req.body.Permitted === "PendingSended") {
-            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Pending" })
+            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Pending" }).select('-User_id')
             res.send(viewdata)
         }
 
         else if (req.body.Permitted === "AcceptedSended") {
-            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Accepted" })
+            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Accepted" }).select('-User_id')
             res.send(viewdata)
         }
         else {
-            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Declined" })
+            let viewdata = await intrestmodel.find({ SenderUserName: req.body.UserName, Permitted: "Declined" }).select('-User_id')
             res.send(viewdata)
         }
 
@@ -268,15 +268,98 @@ exports.viewintrests = async (req, res) => {
 }
 
 
-// exports.updateinterests = async (req, res) => {
-//     let data = {
-//         SenderName: req.body.SenderName,
-//         SenderUserName: req.body.SenderUserName,
-//         ReceiverName: req.body.ReceiverName,
-//         ReceiverUserName: req.body.ReceiverUserName,
-//         Message: req.body.Message,
-//         Permitted: 'Pending'
-//     }
+exports.updateinterests = async (req, res) => {
+    try {
+        let viewdata = await intrestmodel.findOne({ SenderUserName: req.body.SenderUserName, ReceiverUserName: req.body.ReceiverUserName })
+        if (viewdata === null || viewdata.length === 0) {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+        else {
+            if (req.body.User_id !== viewdata.User_id && req.body.ReceiverUserName === viewdata.ReceiverUserName) {
+                let data = {
+                    SenderUserName: req.body.SenderUserName,
+                    ReceiverUserName: req.body.ReceiverUserName,
+                    Permitted: req.body.Permitted
+                }
+                let updatedata = await intrestmodel.updateOne({ SenderUserName: data.SenderUserName, ReceiverUserName: data.ReceiverUserName }, { Permitted: data.Permitted })
+                if (updatedata.modifiedCount === 1) {
+                    res.send({
+                        Status: 1,
+                        Message: "Data Updated Successfully"
+                    })
+                }
+                else {
+                    res.send({
+                        Status: 0,
+                        Message: "Data Doesn't Updated"
+                    })
+                }
+            }
+            else {
+                res.send({
+                    Status: 0,
+                    Message: "Data Doesn't Updated"
+                })
+            }
+        }
 
-//     let updatedata = await intrestmodel.updateone({ SenderUserName: data.SenderUserName, ReceiverUserName: data.ReceiverUserName },{Permitted : data.Permitted})
-// }
+    }
+    catch (error) {
+        if (error.CastError) {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+        else {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+    }
+}
+
+
+
+exports.deleteintrests = async (req, res) => {
+    try {
+        let data = {
+            SenderUserName: req.body.SenderUserName,
+            ReceiverUserName: req.body.ReceiverUserName,
+            User_id: req.body.User_id
+        }
+
+        let deletedata = await intrestmodel.deleteOne({ SenderUserName: data.SenderUserName, ReceiverUserName: data.ReceiverUserName, User_id: data.User_id })
+        if (deletedata.deletedCount === 1) {
+            res.send({
+                Status: 1,
+                Message: "Data Deleted Successfully"
+            })
+
+        }
+        else {
+            res.send({
+                Status: 0,
+                Message: "Data Doesn't Deleted"
+            })
+        }
+    }
+    catch (error) {
+        if (error.CastError) {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+        else {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+    }
+}

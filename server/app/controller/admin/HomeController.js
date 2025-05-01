@@ -5,6 +5,7 @@ const homecountermodel = require('../../model/admin/HomeCounterModel')
 const homewhychoosemodel = require('../../model/admin/HomeWhyChooseModel')
 const homefeaturedprofilemodel = require('../../model/admin/HomeFeaturedProfileModel')
 const homesuccessstoriesmodel = require('../../model/admin/HomeSuccessStoriesmodel')
+const plansmodels = require('../../model/web/PlansModel')
 const finalpath = path.join(__dirname, '../../../uploads')
 
 console.log(finalpath)
@@ -860,7 +861,7 @@ exports.Homesuccessstoriescontroller = async (req, res) => {
     if (req.files === undefined || req.files[0] === undefined) {
         res.send({
             Status: 0,
-            Message: "Data Missing 414"
+            Message: "Data Missing"
         })
     }
     else {
@@ -1155,3 +1156,90 @@ let updatesuccessstoriesdata = async (req) => {
         Success_Stories_Description_Text_Line: req.Success_Stories_Description_Text_Line === '' ? viewdata[0].Success_Stories_Description_Text_Line : req.Success_Stories_Description_Text_Line,
     })
 }
+
+
+
+
+exports.premium = async (req, res) => {
+    if (req.files === undefined || req.files[0] === undefined) {
+        res.send({
+            Status: 0,
+            Message: "Data Missing"
+        })
+    }
+    else {
+        if (req.files[0].filename.includes(".fake")) {
+            fs.unlinkSync(`${finalpath}/${req.files[0].filename}`)
+            res.send({
+                Status: 0,
+                Message: "Unsupported File Format"
+            })
+        }
+        else {
+            let data = {
+                User_Id: req.body.User_Id,
+                PackageName: req.body.PackageName,
+                PackagePrice: req.body.PackagePrice,
+                PackageValidity: req.body.PackageValidity,
+                TransactionID: req.body.TransactionID,
+                PaymentScreenShot: req.files[0].filename
+            }
+            console.log(data)
+
+
+            let insertdata = await plansmodels(data)
+            insertdata.save()
+                .then(() => {
+                    res.send({
+                        Status: 1,
+                        Message: "Data Inserted Successfully"
+                    })
+                })
+                .catch((error) => {
+                    if (error.code == 11000) {
+                        res.send({
+                            Status: 0,
+                            Message: "Data Already Exists"
+                        })
+                    }
+                    else {
+                        res.send({
+                            Status: 0,
+                            Message: "Data Missing"
+                        })
+                    }
+
+                    fs.unlinkSync(`${finalpath}/${req.files[0].filename}`)
+                })
+        }
+    }
+
+}
+
+
+
+exports.viewplans = async (req, res) => {
+    try {
+        let viewdata = await plansmodels.find()
+        console.log(viewdata)
+        res.send({
+            viewdata,
+            imgurl: "https://api.shaadicenter.org/uploads/"
+        })
+    }
+    catch (error) {
+        if (error.CastError) {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+        else {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+    }
+}
+

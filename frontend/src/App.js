@@ -54,6 +54,10 @@ import { ViewSearchProfiles } from './pages/website/main/ViewSearchProfiles';
 import { SendIntrest } from './pages/website/main/SendIntrest';
 import { SuccessfullyIntrest } from './pages/website/main/SuccessfullyIntrest';
 import { ViewInterests } from './pages/website/main/ViewInterests';
+import { ViewMessages } from './pages/website/main/ViewMessages';
+import { PaymentSummary } from './pages/website/main/PaymentSummary';
+import { DashPayments } from './pages/dashboard/main/DashPayments';
+import { DashViewProfile } from './pages/dashboard/main/DashViewProfile';
 
 function App() {
   return (
@@ -85,8 +89,10 @@ function App() {
         <Route path='/send-intrest/:Receiver_id' element={<SendIntrest />} />
         <Route path='/success-send-intrest' element={<SuccessfullyIntrest />} />
         <Route path='/interests/:UserName' element={<ViewInterests />} />
+        <Route path='/view-messages/:UserName' element={<ViewMessages />} />
+        <Route path='/payment-summary' element={<PaymentSummary />} />
 
-
+        
         <Route path='/dash-login' element={<DashLogin />} />
         <Route element={<DashPrivate />}>
           <Route path='/dashboard' element={<Dashboard />} />
@@ -119,6 +125,9 @@ function App() {
           <Route path='/dash-occupation' element={<DashOccupation />} />
           <Route path='/dash-update-occupation/:_id/:OccupationName/:Status' element={<DashUpdateOccupation />} />
           <Route path='/dash-themes' element={<DashThemes />} />
+          <Route path='/dash-payments' element={<DashPayments />} />
+          <Route path='/view-payments' element={<DashViewProfile />} />
+          /dash-payments
         </Route>
       </Routes>
     </BrowserRouter>

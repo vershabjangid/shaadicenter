@@ -6,7 +6,7 @@ import { FaChevronDown, FaXmark } from 'react-icons/fa6'
 import { api, getCookie } from '../url/Url'
 import { TbUserHeart, TbWorldSearch } from 'react-icons/tb'
 import { FiBell, FiHelpCircle, FiHome, FiSettings } from 'react-icons/fi'
-import { BsExclamationCircle } from 'react-icons/bs'
+import { BsEnvelopeOpenHeart, BsExclamationCircle } from 'react-icons/bs'
 import { LuClipboardCheck } from 'react-icons/lu'
 import { MdOutlinePrivacyTip } from 'react-icons/md'
 import { BiLogOut } from 'react-icons/bi'
@@ -216,6 +216,25 @@ export function Header() {
 
                                         <section className='w-[calc(100%-60px)]'>
                                             <p className='text-[14px] text text-[grey] text-start ms-3'>Interests</p>
+                                        </section>
+                                    </Link>
+
+                                </>
+                                :
+                                null
+                        }
+
+{
+                            getcookie ?
+                                <>
+
+                                    <Link to={`/view-messages/${data.UserName}`} className=' flex justify-between items-center px-3 border-b-[2px] border-[#9b9b9b]'>
+                                        <section className=' w-[60px] h-[60px] overflow-hidden rounded-[50%]  flex justify-center items-center'>
+                                            <BsEnvelopeOpenHeart  className='text-[30px]' />
+                                        </section>
+
+                                        <section className='w-[calc(100%-60px)]'>
+                                            <p className='text-[14px] text text-[grey] text-start ms-3'>Messages</p>
                                         </section>
                                     </Link>
 

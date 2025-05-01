@@ -46,6 +46,7 @@ export function SendIntrest() {
     let navigate = useNavigate();
     let insertdata = (value) => {
         let finaldata = {
+            User_id: getCookie('User_Id'),
             SenderName: value.SenderFullUserName,
             SenderUserName: value.SenderUserName,
             ReceiverName: value.ReceiverFullUserName,

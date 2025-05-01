@@ -10,6 +10,8 @@ import { FaXmark } from 'react-icons/fa6'
 import { Footer } from '../../../common/Footer'
 import { TbUserHeart } from 'react-icons/tb'
 import nointrest from '../../../images/chat-converstion.png'
+import toast, { Toaster } from 'react-hot-toast'
+import { RiDeleteBin6Fill } from 'react-icons/ri'
 export function ViewInterests() {
     let [loader, setloader] = useState(false)
     let navigate = useNavigate();
@@ -56,6 +58,81 @@ export function ViewInterests() {
 
     let [modal, setmodal] = useState(false)
     let [modaldata, setmodaldata] = useState(false)
+    let [deletemodal, setdeletemodal] = useState(false)
+
+
+    let notificationsuccess = (success) => toast.success(success)
+    let notificationerror = (error) => toast.error(error)
+    let updatedata = (value) => {
+        try {
+            let data = {
+                Permitted: value,
+                ReceiverUserName: modaldata.ReceiverUserName,
+                SenderUserName: modaldata.SenderUserName,
+                User_id: getCookie('User_Id')
+            }
+            api.put('/update-intrests-data', data, {
+                headers: {
+                    Authorization: getCookie('Registertoken')
+                }
+            })
+                .then((res) => {
+                    if (res.data.Status === 1) {
+                        notificationsuccess(res.data.Message)
+                        setmodal(false)
+                        userdata("All")
+                    }
+                    else {
+                        notificationerror(res.data.Message)
+                        setmodal(false)
+                        userdata("All")
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    let deletedata = () => {
+        try {
+            let data = {
+                ReceiverUserName: modaldata.ReceiverUserName,
+                SenderUserName: modaldata.SenderUserName,
+                User_id: getCookie('User_Id')
+            }
+
+            api.delete('/delete-intrests-data', {
+                data,
+                headers: {
+                    Authorization: getCookie('Registertoken')
+                }
+            })
+                .then((res) => {
+                    if (res.data.Status === 1) {
+                        notificationsuccess(res.data.Message)
+                        setdeletemodal(false)
+                        userdata("All")
+                    }
+                    else {
+                        notificationerror(res.data.Message)
+                        setdeletemodal(false)
+                        userdata("All")
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        }
+        catch (error) {
+            console.log(error)
+        }
+
+    }
 
     return (
         <>
@@ -68,7 +145,7 @@ export function ViewInterests() {
                                     <img src={logo} alt="" className='w-[100%]' />
                                 </div>
 
-                                <button className='profileshadow w-[30px] h-[30px] bg-[#ff869a] text-white rounded-[10px] flex justify-center items-center' onClick={()=>setmodal(false)}><FaXmark /></button>
+                                <button className='profileshadow w-[30px] h-[30px] bg-[#ff869a] text-white rounded-[10px] flex justify-center items-center' onClick={() => setmodal(false)}><FaXmark /></button>
                             </div>
                             <section className='text-[#ff869a]'>
                                 <p className='font-[600] text-[18px] mb-2'>Username : {modaldata.ReceiverName === undefined ? "N/A" : <span className='text-black font-[400]'>{modaldata.ReceiverUserName}</span>}</p>
@@ -77,14 +154,41 @@ export function ViewInterests() {
                                 <p className='font-[600] text-[18px] mb-2'>Status : {modaldata.Permitted === undefined ? "N/A" : <span className='text-black font-[400]'>{modaldata.Permitted}</span>}</p>
 
                                 <div className='text-[14px] mt-[20px] flex'>
-                                    <button className='profileshadow flex items-center bg-[#ff869a] text-white py-3 px-4 rounded-[10px]'><FaHeart className='me-2' />Accept</button>
-                                    <button className='profileshadow flex items-center white-[#ff869a] text-[#ff869a] py-3 px-4 rounded-[10px] ms-4'><FaXmark className='me-2' />Declined</button>
+                                    <button className='profileshadow flex items-center bg-[#ff869a] text-white py-3 px-4 rounded-[10px]' onClick={() => updatedata("Accepted")}><FaHeart className='me-2' />Accept</button>
+                                    <button className='profileshadow flex items-center bg-[white] text-[#ff869a] py-3 px-4 rounded-[10px] ms-4' onClick={() => updatedata("Declined")}><FaXmark className='me-2' />Declined</button>
                                 </div>
                             </section>
                         </section>
                     </section>
                     : ""
             }
+
+            {
+                deletemodal ?
+                    <section className='w-[100%] h-[100vh] fixed bg-[#ffffffb6] z-[90] flex justify-center items-center'>
+                        <section className='w-[50%] border-[3px] border-[#ff869a] bg-[#ffffff] rounded-[10px] p-4'>
+                            <div className='text-[14px] mb-[20px] flex justify-between'>
+                                <div className='w-[100px]'>
+                                    <img src={logo} alt="" className='w-[100%]' />
+                                </div>
+
+                                <button className='profileshadow w-[30px] h-[30px] bg-[#ff869a] text-white rounded-[10px] flex justify-center items-center' onClick={() => setdeletemodal(false)}><FaXmark /></button>
+                            </div>
+                            <section className='text-[#ff869a]'>
+                                <p className='font-[600] text-[18px] mb-2'>Username : {modaldata.ReceiverName === undefined ? "N/A" : <span className='text-black font-[400]'>{modaldata.ReceiverUserName}</span>}</p>
+                                <p className='font-[600] text-[18px] mb-2'>Receiver Name : {modaldata.ReceiverName === undefined ? "N/A" : <span className='text-black font-[400]'>{modaldata.ReceiverName}</span>}</p>
+                                <p className='font-[600] text-[18px] mb-2'>Receiver Message : {modaldata.ReceiverName === undefined ? "N/A" : <span className='text-black font-[400]'>{modaldata.Message}</span>}</p>
+                                <p className='font-[600] text-[18px] mb-2'>Status : {modaldata.Permitted === undefined ? "N/A" : <span className='text-black font-[400]'>{modaldata.Permitted}</span>}</p>
+
+                                <div className='text-[14px] mt-[20px] flex'>
+                                    <button className='profileshadow flex items-center text-[white] bg-[#ff869a] py-3 px-4 rounded-[10px]' onClick={() => deletedata(modaldata)}><RiDeleteBin6Fill className='me-2' />Delete</button>
+                                </div>
+                            </section>
+                        </section>
+                    </section>
+                    : ""
+            }
+
             {
                 loader ? <Loader />
                     : <section className='main'>
@@ -217,7 +321,7 @@ export function ViewInterests() {
                                                                     </div>
 
                                                                     <div className='ms-2'>
-                                                                        <button className='text-[#ffffff] bg-[#ff869a] px-3 h-[50px] rounded-[30px]'>View Interests</button>
+                                                                        <button className='text-[#ffffff] bg-[#ff869a] px-3 h-[50px] rounded-[30px]' onClick={() => setmodal(true) || setmodaldata(items)}>View Interests</button>
                                                                     </div>
                                                                 </section>
 
@@ -239,7 +343,7 @@ export function ViewInterests() {
                                                                     </div>
 
                                                                     <div className='ms-2'>
-                                                                        <button className='text-[#ffffff] bg-[#ff869a] px-3 h-[50px] rounded-[30px]' onClick={() => setmodal(true) || setmodaldata(items)}>View Interests</button>
+                                                                        <button className='text-[#ffffff] bg-[#ff869a] w-[50px] h-[50px] rounded-[30px] flex justify-center items-center' onClick={() => setdeletemodal(true) || setmodaldata(items)}><RiDeleteBin6Fill /> </button>
                                                                     </div>
                                                                 </section>
 
@@ -254,21 +358,9 @@ export function ViewInterests() {
                         </section>
 
                         <Footer />
+                        <Toaster />
                     </section >
             }
         </>
     )
 }
-
-
-
-// <section className='w-[calc(100%-270px)] border-[1px]'>
-// <div className='px-3 py-4'>
-//     <p className='font-[600] text-[20px] '>All interests received</p>
-//     <p className=' text-[16px]'>Interests and responses from members</p>
-// </div>
-// <div className='h-[100%] flex justify-center items-center flex-col'>
-//     <img src={nointrest} alt="" />
-//     {/* <p className=' font-[600]'>You have no pending interests/messages.</p> */}
-// </div>
-// </section>

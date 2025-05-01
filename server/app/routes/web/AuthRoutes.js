@@ -5,7 +5,9 @@ let token = process.env.REGISTERTOKEN
 const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const path = require('path');
-const { viewusers, SearchSortController, viewsearchprofile, senderandreceiverusername, sendintrestcontroller, viewintrests } = require('../../controller/admin/SearchController');
+const { viewusers, SearchSortController, viewsearchprofile, senderandreceiverusername, sendintrestcontroller, viewintrests, updateinterests, deleteintrests } = require('../../controller/admin/SearchController');
+const { sendmessages, getusers, viewmessages } = require('../../controller/admin/MessagesController');
+const { premium, viewplans } = require('../../controller/admin/HomeController');
 
 
 
@@ -66,7 +68,7 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage }).any('Profile_Picture', 'Address_Proof')
+const upload = multer({ storage: storage }).any('Profile_Picture', 'Address_Proof', 'PaymentScreenShot')
 
 
 WebRoutes.post('/register', registercontroller)
@@ -96,7 +98,22 @@ WebRoutes.get('/search-users', userAuth, verifytoken, viewusers)
 WebRoutes.post('/sort-search-users', userAuth, verifytoken, upload, SearchSortController)
 WebRoutes.post('/search-user-profile', userAuth, verifytoken, upload, viewsearchprofile)
 WebRoutes.post('/get-username', userAuth, verifytoken, upload, senderandreceiverusername)
+
+
 WebRoutes.post('/send-interest', userAuth, verifytoken, upload, sendintrestcontroller)
 WebRoutes.post('/user-intrests-data', userAuth, verifytoken, upload, viewintrests)
+WebRoutes.put('/update-intrests-data', userAuth, verifytoken, upload, updateinterests)
+WebRoutes.delete('/delete-intrests-data', userAuth, verifytoken, upload, deleteintrests)
+
+
+WebRoutes.post('/send-messages', userAuth, verifytoken, upload, sendmessages)
+WebRoutes.post('/view-chat-user', userAuth, verifytoken, upload, getusers)
+WebRoutes.post('/view-chats', userAuth, verifytoken, upload, viewmessages)
+
+WebRoutes.post('/payment', userAuth, verifytoken, upload, premium)
+
+
+
+
 
 module.exports = WebRoutes

@@ -48,6 +48,7 @@ export function Login() {
                         console.log(res.data)
                         document.cookie = `Registertoken=${res.data.RegisterToken}`
                         document.cookie = `User_Id=${res.data.User_id}`
+                        document.cookie = `UserName=${res.data.UserName}`
                         setLoader(false)
                         navigate('/')
                     }

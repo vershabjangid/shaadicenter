@@ -86,7 +86,7 @@ export function ViewSearchProfiles() {
                                                 <p className='text-[15px] font-[600] my-2 flex items-center'><div className='me-1 p-1 rounded-[5px] text-white bg-[pink]'><FaLocationPin /></div> <span className='font-[500] text-[14px]'>{residentialdata === null || residentialdata === undefined || residentialdata.Country === undefined ? "N/A" : residentialdata.Country} / {residentialdata === null || residentialdata === undefined || residentialdata.State === undefined ? "N/A" : residentialdata.State} /  {residentialdata === null || residentialdata === undefined || residentialdata.District === undefined ? "N/A" : residentialdata.District}</span></p>
                                             </div>
                                             <div className='mt-[30px] flex'>
-                                                <Link className='profileshadow flex items-center text-[#ff869a] py-3 px-4 rounded-[10px]'><FaEnvelope className='me-2' /> Send Message</Link>
+                                                <Link to={`/view-messages/${Sub_id}`} className='profileshadow flex items-center text-[#ff869a] py-3 px-4 rounded-[10px]'><FaEnvelope className='me-2' /> Send Message</Link>
                                                 <Link to={`/send-intrest/${Sub_id}`} className='profileshadow flex items-center text-[#ff869a] py-3 px-4 rounded-[10px] ms-5'><FaHeart className='me-2' />Send Interests</Link>
                                             </div>
                                         </section>

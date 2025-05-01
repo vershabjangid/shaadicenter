@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaCopyright, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaPhoneAlt, FaYoutube } from 'react-icons/fa'
 import { FaLocationPin, FaXTwitter } from 'react-icons/fa6'
+import { Link } from 'react-router-dom'
 
 export function Footer() {
     return (
@@ -19,10 +20,9 @@ export function Footer() {
                     </section>
                     <section className='m-5'>
                         <p className='font-[600] text-[20px]'>Quick Links</p>
-                        <p className='my-1'>Home</p>
-                        <p className='my-1'>About Us</p>
-                        <p className='my-1'>Search</p>
-                        <p className='my-1'>Blog</p>
+                        <p><Link to={"/"} className='my-1'>Home</Link></p>
+                        <p><Link to={"/about"} className='my-1'>About Us</Link></p>
+                        <p><Link to={"/search"} className='my-1'>Search</Link></p>
                     </section>
                     <section className='m-5'>
                         <p className='font-[600] text-[20px]'>Help & Support</p>
@@ -37,8 +37,9 @@ export function Footer() {
                         <p className='flex items-end my-1'><FaLocationPin className='me-2' /> Aakliya circle, jodhpur, rajasthan</p>
                     </section>
                 </section>
+
                 <section className=' border-t-2 border-[white] flex justify-center py-4 pt-5'>
-                    <p className=' flex items-center'>© 2025 Shaadi Center. All rights reserved.</p>
+                    <p className=' flex items-center'>Developed By Secure World Tech.</p>
                 </section>
             </footer>
         </>
