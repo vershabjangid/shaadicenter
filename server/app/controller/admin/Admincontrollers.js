@@ -123,7 +123,7 @@ exports.viewadminusers = async (req, res) => {
             professionaldata,
             residentialdata,
             familydata,
-            imgurl: "http://localhost:5000/uploads/",
+            imgurl: "https://api.shaadicenter.org/uploads/",
         })
     }
     catch (error) {
@@ -192,7 +192,7 @@ exports.viewadminuserprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "http://localhost:5000/uploads/",
+                imgurl: "https://api.shaadicenter.org/uploads/",
             })
         }
     }

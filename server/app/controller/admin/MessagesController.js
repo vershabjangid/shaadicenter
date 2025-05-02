@@ -62,7 +62,7 @@ exports.getusers = async (req, res) => {
                 Full_Name: viewdata.Full_Name,
                 UserName: viewdata.UserName,
                 Profile_Picture: viewdata.Profile_Picture,
-                imgurl: "http://localhost:5000/uploads/"
+                imgurl: "https://api.shaadicenter/uploads/"
             })
         }
         else {

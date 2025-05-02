@@ -684,7 +684,7 @@ exports.viewuserprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "http://localhost:5000/uploads/",
+                imgurl: "https://api.shaadicenter/uploads/",
             })
         }
     }
@@ -1067,7 +1067,7 @@ exports.headerdata = async (req, res) => {
                 UserName: viewregister.UserName,
                 Profile_Picture: profiledata.Profile_Picture,
                 UserName: profiledata.UserName,
-                _imgurl: "http://localhost:5000/uploads/"
+                _imgurl: "https://api.shaadicenter/uploads/"
             })
         }
     }

@@ -80,7 +80,7 @@ exports.addhomebannercontroller = async (req, res) => {
 
 exports.viewhomebanner = async (req, res) => {
     let viewdata = await homebannermodel.find()
-    let url = "http://localhost:5000/uploads/"
+    let url = "https://api.shaadicenter.org/uploads/"
     res.send({ viewdata, url })
 }
 
@@ -1261,7 +1261,7 @@ exports.viewplans = async (req, res) => {
         let viewdata = await plansmodels.find()
         res.send({
             viewdata,
-            imgurl: "http://localhost:5000/uploads/"
+            imgurl: "https://api.shaadicenter.org/uploads/"
         })
     }
     catch (error) {
