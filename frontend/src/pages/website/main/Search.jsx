@@ -18,7 +18,6 @@ export function Search() {
     let [usersprofessional, setusersprofessional] = useState([])
     let [usersresidential, setusersresidential] = useState([])
     let [filterusersdata, setfilterusersdata] = useState([])
-    // let [filterusersprofiledata, setfilterusersprofiledata] = useState([])
 
     let [imgurl, setimgurl] = useState("")
     let navigate = useNavigate();
@@ -60,16 +59,31 @@ export function Search() {
     let finalfetch = () => {
         viewdata()
             .then((res) => {
-                setreligions(res.viewreligions)
-                setmothertongue(res.viewmothertongues)
-                setcountrydata(res.viewcountries)
-                seteducationdata(res.educationdata)
-                setoccupationdata(res.occupationdata)
-                setusersdata(res.usersdatas[0])
-                setusersprofessional(res.usersdatas[1])
-                setusersresidential(res.usersdatas[2])
-                setfilterusersdata(res.usersdatas[0])
-                setimgurl(res.usersdatas[3])
+                console.log(res.data)
+                if (res.data === undefined) {
+                    setreligions([])
+                    setmothertongue([])
+                    setcountrydata([])
+                    seteducationdata([])
+                    setoccupationdata([])
+                    setusersdata([])
+                    setusersprofessional([])
+                    setusersresidential([])
+                    setfilterusersdata([])
+                    setimgurl([])
+                }
+                else {
+                    setreligions(res.viewreligions)
+                    setmothertongue(res.viewmothertongues)
+                    setcountrydata(res.viewcountries)
+                    seteducationdata(res.educationdata)
+                    setoccupationdata(res.occupationdata)
+                    setusersdata(res.usersdatas[0])
+                    setusersprofessional(res.usersdatas[1])
+                    setusersresidential(res.usersdatas[2])
+                    setfilterusersdata(res.usersdatas[0])
+                    setimgurl(res.usersdatas[3])
+                }
             })
             .catch((error) => {
                 console.log(error)
@@ -141,7 +155,7 @@ export function Search() {
 
 
     let searchuser = (value) => {
-        if (filterusersdata !== undefined || filterusersdata.length !== 0) {
+        if (filterusersdata !== undefined && filterusersdata.length !== 0) {
             setusersdata(filterusersdata.filter((e) => e.UserName.toLowerCase().includes(value) || e.UserName.includes(value) || e.Full_Name.toLowerCase().includes(value) || e.Full_Name.includes(value) || e.Religion.toLowerCase().includes(value) || e.Religion.includes(value) || e.Caste.includes(value) || e.Caste.toLowerCase().includes(value) || e.Age.includes(value) || e.Mother_Tongue.toLowerCase().includes(value) || e.Mother_Tongue.includes(value)))
         }
         else {
@@ -172,7 +186,12 @@ export function Search() {
                 }
             })
                 .then((res) => {
-                    setusersdata(res.data)
+                    if (res.data.Status === 404) {
+                        navigate('/sign-in')
+                    }
+                    else {
+                        setusersdata(res.data)
+                    }
                 })
                 .catch((error) => {
                     console.log(error)

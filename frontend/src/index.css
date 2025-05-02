@@ -121,3 +121,8 @@ code {
 .profileshadow {
   box-shadow: 0px 0px 10px #ff869a, inset -0px -0px 3px #ff869a;
 }
+
+
+.success_content::-webkit-scrollbar {
+  display: none;
+}
