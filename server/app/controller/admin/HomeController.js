@@ -80,7 +80,7 @@ exports.addhomebannercontroller = async (req, res) => {
 
 exports.viewhomebanner = async (req, res) => {
     let viewdata = await homebannermodel.find()
-    let url = "https://api.shaadicenter.org/uploads/"
+    let url = "http://localhost:5000/uploads/"
     res.send({ viewdata, url })
 }
 
@@ -1182,9 +1182,11 @@ exports.premium = async (req, res) => {
                 PackagePrice: req.body.PackagePrice,
                 PackageValidity: req.body.PackageValidity,
                 TransactionID: req.body.TransactionID,
-                PaymentScreenShot: req.files[0].filename
+                PaymentScreenShot: req.files[0].filename,
+                ActivateAt: "0000000",
+                ExpiresAt: "0000000",
+                Status: "Pending"
             }
-            console.log(data)
 
 
             let insertdata = await plansmodels(data)
@@ -1218,13 +1220,48 @@ exports.premium = async (req, res) => {
 
 
 
+exports.viewuserplans = async (req, res) => {
+    try {
+        let viewdata = await plansmodels.findOne({ User_Id: req.body.User_id, Status: 'Active' })
+
+        console.log(viewdata)
+        if (Date.now() > viewdata.ExpiresAt) {
+            let viewdata = await plansmodels.updateOne({ User_Id: req.body.User_id }, { Status: 'Expired' })
+            res.send({
+                Status: 0,
+                Message: "Package Expired"
+            })
+        }
+        else {
+            res.send({
+                viewdata
+            })
+        }
+    }
+    catch (error) {
+        if (error.CastError) {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+        else {
+            res.send({
+                Status: 0,
+                Message: "No User Found"
+            })
+        }
+    }
+}
+
+
+
 exports.viewplans = async (req, res) => {
     try {
         let viewdata = await plansmodels.find()
-        console.log(viewdata)
         res.send({
             viewdata,
-            imgurl: "https://api.shaadicenter.org/uploads/"
+            imgurl: "http://localhost:5000/uploads/"
         })
     }
     catch (error) {
@@ -1243,3 +1280,26 @@ exports.viewplans = async (req, res) => {
     }
 }
 
+
+exports.updateplanstatus = async (req, res) => {
+
+    let data = {
+        ActivateAt: req.body.Status === "Active" ? Date.now() : "000000000",
+        ExpiresAt: req.body.Status === "Active" ? req.body.Validity === "90 days" ? Date.now() + 90 * 24 * 60 * 60 * 1000 : req.body.Validity === "180 days" ? Date.now() + 180 * 24 * 60 * 60 * 1000 : req.body.Validity === "600 days" ? Date.now() + 600 * 24 * 60 * 60 * 1000 : req.body.Validity === "720 days" ? Date.now() + 720 * 24 * 60 * 60 * 1000 : "00000000" : "000000000",
+        User_Id: req.body.User_Id,
+        Status: req.body.Status
+    }
+    let updatedata = await plansmodels.updateOne({ User_Id: data.User_Id }, { ActivateAt: data.ActivateAt, ExpiresAt: data.ExpiresAt, Status: data.Status })
+    if (updatedata.modifiedCount === 1) {
+        res.send({
+            Status: 1,
+            Message: "Data Updated Successfully"
+        })
+    }
+    else {
+        res.send({
+            Status: 0,
+            Message: "Data Doesn't Updated"
+        })
+    }
+}

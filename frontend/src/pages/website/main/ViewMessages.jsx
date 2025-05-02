@@ -7,10 +7,11 @@ import { FaPlus, FaUser } from 'react-icons/fa'
 import { LuSend } from 'react-icons/lu'
 import { IoCheckmarkDoneOutline } from 'react-icons/io5'
 import logo from '../../../images/mesagebanner.png'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { api, getCookie } from '../../../url/Url'
 import { useFormik } from 'formik'
 import { Plans } from './Plans'
+import { PlanVerification } from './PlanVerification'
 export function ViewMessages() {
     let [loader, setloader] = useState(false)
     let { UserName } = useParams();
@@ -74,7 +75,7 @@ export function ViewMessages() {
         viewchats()
     }, [])
 
-
+    console.log(messagedata)
 
     let formik = useFormik({
         initialValues: {
@@ -119,14 +120,14 @@ export function ViewMessages() {
         }
     }
 
+
     return (
         <>
-            <Plans />
+            <PlanVerification />
             {
                 loader ? <Loader />
                     : <section className='main'>
                         <Header />
-
                         <section className='w-[100%] h-[85px] border-[1px] bg-[white]'></section>
                         <section className='w-[100%] py-[5px]  bg-[#ffffff]'>
                             <section className='w-[100%] py-[20px] m-auto'>
@@ -266,42 +267,6 @@ export function ViewMessages() {
                                             </section>
 
 
-                                            <section className='px-2 mt-2'>
-                                                <section className='px-3 py-2 leading-[35px] text-[#ff869a] bg-[white] rounded-[10px] flex items-center'>
-                                                    <div className='w-[45px] h-[45px] rounded-[50%] border-[1px] bg-[#939393]  overflow-hidden'>
-                                                        <div className='w-[100%] h-[100%] text-[30px] rounded-[50%] text-[#adadad] flex justify-center items-end'>
-                                                            <FaUser className='mt-[10px]' />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className='ms-3'>
-                                                        <p className='text-[black]'>
-                                                            Full Name
-                                                        </p>
-                                                        <p className='text-[#8e8e8e] mt-[-10px]'>Last Status</p>
-                                                    </div>
-                                                </section>
-                                            </section>
-
-
-                                            <section className='px-2 mt-2'>
-                                                <section className='px-3 py-2 leading-[35px] text-[#ff869a] bg-[white] rounded-[10px] flex items-center'>
-                                                    <div className='w-[45px] h-[45px] rounded-[50%] border-[1px] bg-[#939393]  overflow-hidden'>
-                                                        <div className='w-[100%] h-[100%] text-[30px] rounded-[50%] text-[#adadad] flex justify-center items-end'>
-                                                            <FaUser className='mt-[10px]' />
-                                                        </div>
-                                                    </div>
-
-                                                    <div className='ms-3'>
-                                                        <p className='text-[black]'>
-                                                            Full Name
-                                                        </p>
-                                                        <p className='text-[#8e8e8e] mt-[-10px]'>Last Status</p>
-                                                    </div>
-                                                </section>
-                                            </section>
-
-
                                         </section>
                                     </section>
 
@@ -332,9 +297,9 @@ export function ViewMessages() {
 
                                         <section className='w-[100%] h-[calc(100%-145px)] overflow-y-scroll bg-[#f0bbc4] relative' style={{ backgroundImage: `url(${logo})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundPosition: "center" }}>
                                             {
-                                                messagedata.map((items, index) => {
+                                                messagedata === undefined || messagedata.length === 0 ? <div className='flex justify-center items-center text-[#fa5c76] bg-[#ffffff7a]'>Start Your Conversation</div> : messagedata.map((items, index) => {
                                                     return (
-                                                        items.Sender === UserName ?
+                                                        items.Sender !== UserName ?
 
                                                             <div className='w-[100%] py-2'>
                                                                 <div className=' flex items-center ms-2'>
@@ -345,41 +310,37 @@ export function ViewMessages() {
                                                             </div>
                                                             :
 
-                                                            <div className='w-[100%] h-auto  p-2  justify-end flex items-end'>
-                                                                <div className=' flex items-center ms-2'>
-                                                                    <div className='flex items-end bg-[white] rounded-[5px]  px-2'>
-                                                                        <div className=' text-[18px] text-[#fa5c76] font-[400] m-2'>{items.Message} </div>
-                                                                        <div className='text-[#2290bb]'>
-                                                                            <IoCheckmarkDoneOutline />
-                                                                        </div>
+                                                            items.Sender === UserName ?   <div className='w-[100%] h-auto  p-2  justify-end flex items-end'>
+                                                            <div className=' flex items-center ms-2'>
+                                                                <div className='flex items-end bg-[white] rounded-[5px]  px-2'>
+                                                                    <div className=' text-[18px] text-[#fa5c76] font-[400] m-2'>{items.Message} </div>
+                                                                    <div className='text-[#2290bb]'>
+                                                                        <IoCheckmarkDoneOutline />
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>:null
 
                                                     )
                                                 })
                                             }
 
-
-
-
-
-
-
-
                                         </section>
-                                        <form onSubmit={formik.handleSubmit} className='px-3 h-[80px] border-[1px] flex  justify-evenly items-center '>
-                                            <section className='w-[92%] h-[100%] text-[#ff869a] bg-[white] rounded-[10px] flex items-center'>
-                                                <div className=' w-[100%] h-[100%] flex items-center'>
-                                                    <input type="text" className='border-[2px] border-[#ff869a] p-2 px-3 rounded-[50px] w-[100%]' placeholder='Type a message' onChange={(e) => formik.setFieldValue('Message', e.target.value)} />
-                                                </div>
-                                            </section>
-                                            <section className='h-[100%] flex items-center'>
-                                                <button type='submit' className='w-[45px] h-[45px] bg-[#ff869a] rounded-[50%]  text-[white] text-[25px] flex items-center justify-center pe-1 pt-1'>
-                                                    <LuSend />
-                                                </button>
-                                            </section>
-                                        </form>
+                                        {
+                                            messagedata === undefined ? null :
+                                                <form onSubmit={formik.handleSubmit} className='px-3 h-[80px] border-[1px] flex  justify-evenly items-center '>
+                                                    <section className='w-[92%] h-[100%] text-[#ff869a] bg-[white] rounded-[10px] flex items-center'>
+                                                        <div className=' w-[100%] h-[100%] flex items-center'>
+                                                            <input type="text" className='border-[2px] border-[#ff869a] p-2 px-3 rounded-[50px] w-[100%]' placeholder='Type a message' onChange={(e) => formik.setFieldValue('Message', e.target.value)} />
+                                                        </div>
+                                                    </section>
+                                                    <section className='h-[100%] flex items-center'>
+                                                        <button type='submit' className='w-[45px] h-[45px] bg-[#ff869a] rounded-[50%]  text-[white] text-[25px] flex items-center justify-center pe-1 pt-1'>
+                                                            <LuSend />
+                                                        </button>
+                                                    </section>
+                                                </form>
+                                        }
                                     </section>
                                 </section>
                             </section>

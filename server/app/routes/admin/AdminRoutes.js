@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer')
 const path = require('path')
 const { viewuserprofile } = require('../../controller/web/WebAuth');
-const { addhomebannercontroller, updatehomebanner, viewhomebanner, addhomecounter, viewhomecounters, deletecounters, Homewhychoosecontroller, viewhomewhychoose, deletehomewhychoose, updatehomewhychoose, Homefeaturedprofilecontroller, viewhomefeaturedprofile, deletehomefeaturedprofile, updatehomefeaturedprofile, Homesuccessstoriescontroller, viewhomesuccessstories, deletehomesuccessstories, updatesuccessstories, viewplans } = require('../../controller/admin/HomeController');
+const { addhomebannercontroller, updatehomebanner, viewhomebanner, addhomecounter, viewhomecounters, deletecounters, Homewhychoosecontroller, viewhomewhychoose, deletehomewhychoose, updatehomewhychoose, Homefeaturedprofilecontroller, viewhomefeaturedprofile, deletehomefeaturedprofile, updatehomefeaturedprofile, Homesuccessstoriescontroller, viewhomesuccessstories, deletehomesuccessstories, updatesuccessstories, viewplans, updateplanstatus } = require('../../controller/admin/HomeController');
 const { addaboutbannercontroller, viewaboutbanner, updateaboutbanner, addaboutparagraphcontroller, viewaboutparagraph, addaboutsubparagraphcontroller, viewsubaboutparagraph, updateaboutparagraph, updateaboutsubparagraph, deleteparagraphheading, deleteaboutsubparagraph } = require('../../controller/admin/AboutController');
 
 
@@ -193,4 +193,5 @@ Adminroutes.post('/view-user-profile', userAuth, verifytoken, viewuserprofile)
 
 
 Adminroutes.get('/view-payments', userAuth, verifytoken, upload, viewplans)
+Adminroutes.put('/update-payment', userAuth, verifytoken, upload, updateplanstatus)
 module.exports = Adminroutes

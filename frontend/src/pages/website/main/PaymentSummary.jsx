@@ -59,8 +59,8 @@ console.log(data)
         }
     }
     return (
-        <section className='w-[100%] h-[100vh] bg-[#ff96a7]'>
-            <div className='text-center py-[20px] text-[40px] font-[600] text-[white]'>
+        <section className='w-[100%] h-[100vh] bg-[#ffd0d8]'>
+            <div className='text-center py-[20px] text-[40px] font-[600] text-[black]'>
                 <p className=''>Payment Summary</p>
             </div>
             <section className='w-[100%] flex justify-center '>

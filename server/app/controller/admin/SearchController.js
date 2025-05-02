@@ -88,7 +88,7 @@ exports.viewsearchprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "https://api.shaadicenter.org/uploads/",
+                imgurl: "http://localhost:5000/uploads/",
             })
         }
     }

@@ -25,8 +25,20 @@ let plandetails = mongoose.Schema({
     PaymentScreenShot: {
         type: String,
         required: true
+    },
+    ActivateAt: {
+        type: Number,
+        required: true
+    },
+    ExpiresAt: {
+        type: Number,
+        required: true
+    },
+    Status: {
+        type: String,
+        required: true
     }
-})
+}, { timestamps: true })
 
 
 let plansmodels = mongoose.model('plandetail', plandetails);

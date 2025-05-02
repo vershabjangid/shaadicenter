@@ -7,7 +7,7 @@ const multer = require('multer')
 const path = require('path');
 const { viewusers, SearchSortController, viewsearchprofile, senderandreceiverusername, sendintrestcontroller, viewintrests, updateinterests, deleteintrests } = require('../../controller/admin/SearchController');
 const { sendmessages, getusers, viewmessages } = require('../../controller/admin/MessagesController');
-const { premium, viewplans } = require('../../controller/admin/HomeController');
+const { premium, viewplans, viewuserplans } = require('../../controller/admin/HomeController');
 
 
 
@@ -111,6 +111,8 @@ WebRoutes.post('/view-chat-user', userAuth, verifytoken, upload, getusers)
 WebRoutes.post('/view-chats', userAuth, verifytoken, upload, viewmessages)
 
 WebRoutes.post('/payment', userAuth, verifytoken, upload, premium)
+WebRoutes.post('/view-payment-history', userAuth, verifytoken, upload, viewuserplans)
+
 
 
 

@@ -479,7 +479,7 @@ exports.logincontrol = async (req, res) => {
     let viewdata = await registersmodel.find({ Email: data.Email, Password: data.Password })
     let UserName = await createprofilemodel.find({ Sub_id: viewdata[0]._id })
     console.log(UserName)
-    if (viewdata === null || viewdata.length === 0) {
+    if (viewdata === null || viewdata.length === 0 || UserName.length === 0 || UserName === null) {
         res.send({
             Status: 0,
             Message: "Incorrect Email or Password"
@@ -684,7 +684,7 @@ exports.viewuserprofile = async (req, res) => {
                 professionaldata,
                 residentialdata,
                 familydata,
-                imgurl: "https://api.shaadicenter.org/uploads/",
+                imgurl: "http://localhost:5000/uploads/",
             })
         }
     }
@@ -1067,7 +1067,7 @@ exports.headerdata = async (req, res) => {
                 UserName: viewregister.UserName,
                 Profile_Picture: profiledata.Profile_Picture,
                 UserName: profiledata.UserName,
-                _imgurl: "https://api.shaadicenter.org/uploads/"
+                _imgurl: "http://localhost:5000/uploads/"
             })
         }
     }

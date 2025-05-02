@@ -62,7 +62,7 @@ exports.getusers = async (req, res) => {
                 Full_Name: viewdata.Full_Name,
                 UserName: viewdata.UserName,
                 Profile_Picture: viewdata.Profile_Picture,
-                imgurl: "https://api.shaadicenter.org/uploads/"
+                imgurl: "http://localhost:5000/uploads/"
             })
         }
         else {
@@ -84,7 +84,9 @@ exports.getusers = async (req, res) => {
 exports.viewmessages = async (req, res) => {
     try {
         let viewmessages = await messagesmodel.find({ Sender: req.body.Sender, Receiver: req.body.Receiver })
+        let receivemessages = await messagesmodel.find({ Sender: req.body.Receiver, Receiver: req.body.Sender })
         console.log(viewmessages)
+        console.log(receivemessages)
         if (viewmessages !== null || viewmessages !== undefined) {
             res.send({
                 viewmessages

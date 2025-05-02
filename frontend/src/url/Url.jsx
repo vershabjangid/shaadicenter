@@ -1,7 +1,7 @@
 import axios from "axios";
-
+// https://api.shaadicenter.org/
 export const api = axios.create({
-    baseURL: 'https://api.shaadicenter.org/',
+    baseURL: 'http://localhost:5000/',
     withCredentials: true
 })
 

@@ -14,7 +14,7 @@ export function Plans() {
     return (
         <>
             {
-                hidecomponent ? <section className='w-[100%] h-[100%] bg-[white] fixed z-[9999] flex justify-center flex-col items-center overflow-y-scroll '>
+                hidecomponent ? <section className='w-[100%] h-[100%] bg-[white] z-[9999] flex justify-center flex-col items-center overflow-y-scroll '>
 
                     <section className='mt-[150px]'>
                         <h1 className='font-[700] text-[35px]'>Membership Plans</h1>

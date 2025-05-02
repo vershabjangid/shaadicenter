@@ -42,7 +42,12 @@ export function DashPayments() {
 
 
     let fullinfonavigate = (value) => {
-        navigate('/view-payments', { Data: value, imgurl: imgurl })
+        navigate('/view-payments', {
+            state: {
+                Data: value,
+                imgurl: imgurl
+            }
+        })
     }
 
 
@@ -79,7 +84,7 @@ export function DashPayments() {
                                             <th className='p-5 font-[600]'>User ID</th>
                                             <th className='p-5 font-[600]'>Package Name</th>
                                             <th className='p-5 font-[600]'>Package Price</th>
-                                            <th className='p-5 font-[600]'>Transaction ID</th>
+                                            <th className='p-5 font-[600]'>Status</th>
                                             <th className='p-5 font-[600]'>View Profile</th>
                                         </tr>
                                     </thead>
@@ -92,7 +97,7 @@ export function DashPayments() {
                                                         <td className='p-5'>{items.User_Id}</td>
                                                         <td className='p-5'>{items.PackageName}</td>
                                                         <td className='p-5'>{items.PackagePrice}</td>
-                                                        <td className='p-5'>{items.TransactionID}</td>
+                                                        <td className='p-5'><span className={items.Status === "Pending" || items.Status === "Expired" || items.Status === "Declined" ? "bg-[red] px-4 py-3 rounded-[10px] text-white" : items.Status === "Active" ? 'bg-[green] px-4 py-3 rounded-[10px] text-white' : null}>{items.Status}</span></td>
                                                         <td className='p-5'>
                                                             <button className='bg-[skyblue] py-2 px-3 rounded-[10px] text-white' onClick={() => fullinfonavigate(items)}>
                                                                 View Profile
@@ -107,7 +112,7 @@ export function DashPayments() {
                         }
                     </section>
                 </section>
-            </section>
+            </section >
         </>
     )
 }
