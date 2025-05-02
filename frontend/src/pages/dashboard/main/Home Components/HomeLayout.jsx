@@ -520,7 +520,7 @@ export function HomeLayout() {
                                                                             <div className='rounded-t-[20px] h-[200px] overflow-hidden bg-[white] flex items-center'>
                                                                                 <img src={imgurl + items.Success_Stories_Card_Image} alt="" className='w-[100%]' />
                                                                             </div>
-                                                                            <div className=' text-black p-2 rounded-b-[20px] h-[200px] bg-[white] relative'>
+                                                                            <div className='success_content overflow-y-scroll text-black p-2 rounded-b-[20px] h-[200px] bg-[white] relative'>
                                                                                 <div className='absolute right-[15px] top-[15px] flex '>
                                                                                     <section className='text-[red] text-[20px] cursor-pointer me-3' onClick={() => updatedata(items)}><FaEdit /></section>
                                                                                     <RiDeleteBin5Fill className=' text-[20px] text-[red]' onClick={() => setmodal(true) || setmodaldata(items)} />
